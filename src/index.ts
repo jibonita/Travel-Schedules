@@ -4,7 +4,6 @@ import {Usertype} from './entity/usertype';
 
 createConnection().then(async connection => {
 
-
     // const user = new UserType();
     // user.name = 'Admin';
     // await connection.manager.save(user);
@@ -12,5 +11,4 @@ createConnection().then(async connection => {
     // const users = await connection.manager.find(UserType);
     // console.log('Loaded users: ', users);
 
-    
 }).catch(error => console.log(error));
