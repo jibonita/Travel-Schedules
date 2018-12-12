@@ -3,13 +3,14 @@
    "host": "localhost",
    "port": 3306,
    "username": "root",
-   "password": "164352asd123",
+   "password": "admin",
    "database": "travelschedules",
-   "synchronize": true,
+   "synchronize": false,
    "logging": false,
    "entities": [
       "src/entity/**/*.ts"
    ],
+   "migrationsTableName": "custom_migration_table",
    "migrations": [
       "src/migration/**/*.ts"
    ],
@@ -20,5 +21,5 @@
       "entitiesDir": "src/entity",
       "migrationsDir": "src/migration",
       "subscribersDir": "src/subscriber"
-   }
+   } 
 }
