@@ -3,7 +3,7 @@ import { IsString, Length, Matches, IsOptional } from 'class-validator';
 export class GetUserDTO {
 
   @IsString()
-  username: string;
+  email: string;
 
   password: string;
 
