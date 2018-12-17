@@ -8,13 +8,27 @@ export class RouteStop {
 // @PrimaryGeneratedColumn()
 // RoutesStopsID: number;
 
-@PrimaryColumn({ name: 'RouteID' })
-@ManyToOne(type => Route, route => route.RouteID)
+// @PrimaryColumn({ name: 'RouteID' })
+// @ManyToOne(type => Route, route => route.RouteID)
+// routeID: number;
+
+// @PrimaryColumn({ name: 'StopID' })
+// @ManyToOne(type => Stop, stop => stop.StopID)
+// stopID: number;
+
+@PrimaryColumn()
 routeID: number;
 
-@PrimaryColumn({ name: 'StopID' })
-@ManyToOne(type => Stop, stop => stop.StopID)
+@ManyToOne(() => Route, route => route.RouteID)
+@JoinColumn({ name: 'routeID' })
+route: Route;
+
+@PrimaryColumn()
 stopID: number;
+
+@ManyToOne(() => Stop, stop => stop.StopID)
+@JoinColumn({ name: 'stopID' })
+stop: Stop;
 
 @Column()
 StopOrder: number;

@@ -5,7 +5,7 @@ import { User } from './user';
 export class Usertype {
 
     @PrimaryGeneratedColumn({name: 'UsertypeID'})
-    @OneToOne(type => User, user => user.usertypeID)
+    @OneToOne(type => User, user => user.usertype)
      usertypeID: number;
 
     @Column( { name: 'Name' } )

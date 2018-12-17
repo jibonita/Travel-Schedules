@@ -2,16 +2,15 @@ import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, PrimaryCo
 import { ForeignKeyMetadata } from 'typeorm/metadata/ForeignKeyMetadata';
 import { User } from './user';
 
-// @Entity()
+//@Entity('customers')
 export class Customer {
-    @PrimaryColumn()
+    @PrimaryColumn({ name: 'CustomerID' })
     @OneToOne(type => User, user => user.userID)
-    @JoinColumn({ name: 'CustomerID' })
-    CustomerID: number;
+    customerID: number;
 
-    @Column()
-    FirstName: string;
+    @Column({ name: 'FirstName' })
+    firstName: string;
 
-    @Column()
-    LastName: string;
+    @Column({ name: 'LastName' })
+    lastName: string;
 }
