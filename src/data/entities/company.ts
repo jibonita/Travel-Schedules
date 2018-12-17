@@ -1,15 +1,15 @@
 import { Entity, Column, OneToOne, JoinColumn, PrimaryColumn } from 'typeorm';
 import { User } from './user';
 
-@Entity()
+//@Entity('companies')
 export class Company {
 
     @PrimaryColumn()
     @OneToOne(type => User, user => user.userID)
     @JoinColumn({ name: 'CompanyID' })
-    CompanyID: number;
+    companyID: number;
 
-    @Column()
-    Name: string;
+    @Column( { name: 'Name' } )
+    name: string;
 
 }

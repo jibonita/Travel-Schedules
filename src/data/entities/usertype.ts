@@ -1,13 +1,13 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from 'typeorm';
 import { User } from './user';
 
-@Entity()
+@Entity('usertype')
 export class Usertype {
 
-    @PrimaryGeneratedColumn()
+    @PrimaryGeneratedColumn({name: 'UsertypeID'})
     @OneToOne(type => User, user => user.usertypeID)
      usertypeID: number;
 
-    @Column()
+    @Column( { name: 'Name' } )
     name: string;
 }
