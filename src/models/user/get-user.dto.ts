@@ -1,8 +1,9 @@
-import { IsString, Length, Matches, IsOptional, IsEmail } from 'class-validator';
+import { IsString, Length, Matches, IsOptional } from 'class-validator';
 
 export class GetUserDTO {
 
-  email: string;
+  @IsString()
+  username: string;
 
   password: string;
 

@@ -7,3 +7,4 @@ temp/
 ormconfig.json
 migration/
 .env
+package-lock.json

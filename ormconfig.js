@@ -4,13 +4,13 @@ module.exports = {
     port: +process.env.DB_PORT || 3306,
     username: process.env.DB_USERNAME || 'root',
     password: process.env.DB_PASSWORD || 'admin',
-    database: process.env.DB_DATABASE_NAME,
-    synchronize: false,
+    database: process.env.DB_DATABASE_NAME || 'travelschedules',
+    synchronize: true,
     entities: [
-        'src/data/entities/**/*.ts',
+        'src/data/entities/*.ts',
     ],
     migrations: [
-        'src/data/migrations/**/*.ts',
+        'src/data/migrations/*.ts',
     ],
     cli: {
         entitiesDir: 'src/data/entities',

@@ -35,7 +35,7 @@ export class ConfigService {
       DB_PORT: Joi.number().default(3306),
       DB_USERNAME: Joi.string().default('root'),
       DB_PASSWORD: Joi.string().default('admin'),
-      DB_DATABASE_NAME: Joi.string().required(),
+      DB_DATABASE_NAME: Joi.string().required().default('travelschedules'),
     });
 
     const { error, value: validatedEnvConfig } = Joi.validate(

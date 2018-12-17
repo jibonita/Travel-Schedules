@@ -1,5 +1,4 @@
 import { IsString, Length, Matches } from 'class-validator';
-import { Optional } from '@nestjs/common';
 
 export class UserRegisterDTO {
 

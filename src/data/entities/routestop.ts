@@ -2,17 +2,17 @@ import { Entity, PrimaryGeneratedColumn, Column, OneToOne, ManyToMany, JoinColum
 import { Route } from './route';
 import { Stop } from './stop';
 
-@Entity()
+@Entity('routestops')
 export class RouteStop {
 
-@PrimaryGeneratedColumn()
-RoutesStopsID: number;
+// @PrimaryGeneratedColumn()
+// RoutesStopsID: number;
 
-// @PrimaryColumn({ name: 'RouteID' })
+@PrimaryColumn({ name: 'RouteID' })
 @ManyToOne(type => Route, route => route.RouteID)
 routeID: number;
 
-// @PrimaryColumn({ name: 'StopID' })
+@PrimaryColumn({ name: 'StopID' })
 @ManyToOne(type => Stop, stop => stop.StopID)
 stopID: number;
 

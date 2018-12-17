@@ -3,7 +3,7 @@ import { Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { Stop } from './stop';
 import { RouteStop } from './routestop';
 
-@Entity()
+@Entity('routes')
 export class Route {
 
     @PrimaryGeneratedColumn()

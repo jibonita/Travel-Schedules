@@ -5,20 +5,20 @@
    "username": "root",
    "password": "admin",
    "database": "travelschedules",
-   "synchronize": false,
+   "synchronize": true,
    "logging": false,
    "entities": [
-      "src/entity/**/*.ts"
+      "src/data/entities/*.ts"
    ],
    "migrationsTableName": "custom_migration_table",
    "migrations": [
-      "src/migration/**/*.ts"
+      "src/data/migration/**/*.ts"
    ],
    "subscribers": [
-      "src/subscriber/**/*.ts"
+      "src/data/subscriber/**/*.ts"
    ],
    "cli": {
-      "entitiesDir": "src/entity",
+      "entitiesDir": "src/entities",
       "migrationsDir": "src/migration",
       "subscribersDir": "src/subscriber"
    } 
