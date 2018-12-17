@@ -4,7 +4,7 @@ import { join, extname } from 'path';
 import { v4 } from 'uuid';
 import { contentType } from 'mime-types';
 
-@Injectable()
+//@Injectable()
 export class FileService {
 
   static fileLimit(files: number, fileSize: number) {

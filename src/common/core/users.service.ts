@@ -19,7 +19,7 @@ export class UsersService {
     ) { }
 
   async registerUser(user: UserRegisterDTO) {
-    const userFound = await this.usersRepository.findOne({ where: { username: user.username } });
+    const userFound = await this.usersRepository.findOne({ where: { email: user.email } });
 
     if (userFound) {
       throw new Error('User not found!');
@@ -34,12 +34,14 @@ export class UsersService {
   }
 
   async validateUser(payload: JwtPayload): Promise<GetUserDTO> {
-    const userFound: any = await this.usersRepository.findOne({ where: { username: payload.username } });
+    const userFound: any = await this.usersRepository.findOne({ where: { email: payload.email } });
     return userFound;
   }
 
   async signIn(user: UserLoginDTO): Promise<GetUserDTO> {
-    const userFound: GetUserDTO = await this.usersRepository.findOne({ select: ['username', 'usertype', 'password'], where: { username: user.username } });
+    const userFound: GetUserDTO = await this.usersRepository
+        .findOne({ select: ['email', 'password', 'usertype'],
+                  where: { email: user.email } });
 
     if (userFound) {
       const result = await bcrypt.compare(user.password, userFound.password);

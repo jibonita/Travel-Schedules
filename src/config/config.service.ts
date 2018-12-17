@@ -81,6 +81,7 @@ export class ConfigService {
   }
 
   public get dbType(): DatabaseType {
+    console.log(this.envConfig)
     return this.envConfig.DB_TYPE as DatabaseType;
   }
 }
