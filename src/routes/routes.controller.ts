@@ -21,6 +21,6 @@ export class RoutesController {
     whitelist: true,
   }))
   route: AddRouteDTO) {
-    return this.routesService.addRoute(route);
+    return this.routesService.addRoute();
   }
 }

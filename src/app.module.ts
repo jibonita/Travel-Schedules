@@ -4,12 +4,9 @@ import { AuthModule } from './auth/auth.module';
 import { DatabaseModule } from './database/database.module';
 import { UsersModule } from './users/users.module';
 import { CoreModule } from './common/core/core.module';
-<<<<<<< HEAD
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigService } from './config/config.service';
-=======
 import { RoutesModule } from './routes/routes.module';
->>>>>>> bc91dafb42c9f4b117043e0a8f47539bb71a8e45
 
 @Module({
   imports: [

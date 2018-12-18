@@ -15,4 +15,5 @@ export class RoutesService {
     return `From ${from} to ${to}`;
     // return this.usersRepository.find({});
   }
+  async addRoute(){}
 }
