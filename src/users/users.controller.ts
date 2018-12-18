@@ -11,8 +11,9 @@ export class UsersController {
   ) { }
 
   @Get()
-  @UseGuards(AuthGuard(), AdminGuard)
+  //@UseGuards(AuthGuard(), AdminGuard)
   all() {
     return this.usersService.getAll();
   }
 }
+

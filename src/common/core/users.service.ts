@@ -54,6 +54,7 @@ export class UsersService {
   }
 
   async getAll() {
-    return this.usersRepository.find({});
+    return {useri: 'vsichki'};
+    //return this.usersRepository.find({});
   }
 }
