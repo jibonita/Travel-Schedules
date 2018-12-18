@@ -1,17 +1,17 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
-//@Entity()
+@Entity()
 export class Ticket {
 
     @PrimaryGeneratedColumn()
-    TicketID: number;
+    ticketID: number;
 
     @Column()
-    UserID: number;
+    userID: number;
 
     @Column()
-    RouteID: number;
+    routeID: number;
 
     @Column()
-    EndPoint: string;
+    endPoint: string;
 }

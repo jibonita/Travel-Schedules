@@ -19,14 +19,14 @@ export class RouteStop {
 @PrimaryColumn()
 routeID: number;
 
-@ManyToOne(() => Route, route => route.RouteID)
+@ManyToOne(() => Route, route => route.routeID)
 @JoinColumn({ name: 'routeID' })
 route: Route;
 
 @PrimaryColumn()
 stopID: number;
 
-@ManyToOne(() => Stop, stop => stop.StopID)
+@ManyToOne(() => Stop, stop => stop.stopID)
 @JoinColumn({ name: 'stopID' })
 stop: Stop;
 

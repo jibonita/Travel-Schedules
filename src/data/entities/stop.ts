@@ -7,10 +7,10 @@ export class Stop {
 
     @PrimaryGeneratedColumn()
     @OneToMany(type => RouteStop, rstop => rstop.stopID)
-    @OneToMany(type => Route, route => route.StartPoint)
-    @OneToMany(type => Route, route => route.EndPoint)
-    StopID: string;
+    @OneToMany(type => Route, route => route.startPoint)
+    @OneToMany(type => Route, route => route.endPoint)
+    stopID: string;
 
     @Column()
-    Name: string;
+    name: string;
 }

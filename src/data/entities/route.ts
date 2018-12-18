@@ -8,19 +8,19 @@ export class Route {
 
     @PrimaryGeneratedColumn()
     @OneToMany(type => RouteStop, rstop => rstop.routeID)
-    RouteID: number;
+    routeID: number;
 
     @Column()
-    @OneToMany(type => Stop, stop => stop.StopID)
-    StartPoint: number;
+    @OneToMany(type => Stop, stop => stop.stopID)
+    startPoint: number;
 
     @Column()
-    @OneToMany(type => Stop, stop => stop.StopID)
-    EndPoint: number;
+    @OneToMany(type => Stop, stop => stop.stopID)
+    endPoint: number;
 
     @Column()
-    Leaves: Date;
+    leaves: Date;
 
     @Column()
-    IsApproved: boolean;
+    isApproved: boolean;
 }

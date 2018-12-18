@@ -4,7 +4,7 @@ import { ConfigService } from './config.service';
 @Module({
   providers: [{
     provide: ConfigService,
-    useValue: new ConfigService('./src/.env'),
+    useValue: new ConfigService(),
   }],
   exports: [ConfigService],
 })

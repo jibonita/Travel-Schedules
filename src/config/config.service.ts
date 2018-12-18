@@ -34,7 +34,7 @@ export class ConfigService {
       DB_HOST: Joi.string().default('localhost'),
       DB_PORT: Joi.number().default(3306),
       DB_USERNAME: Joi.string().default('root'),
-      DB_PASSWORD: Joi.string().default('admin'),
+      DB_PASSWORD: Joi.string().default('164352asd123'),
       DB_DATABASE_NAME: Joi.string().required().default('travelschedules'),
     });
 
@@ -81,7 +81,7 @@ export class ConfigService {
   }
 
   public get dbType(): DatabaseType {
-    console.log(this.envConfig)
+    console.log(this.envConfig);
     return this.envConfig.DB_TYPE as DatabaseType;
   }
 }

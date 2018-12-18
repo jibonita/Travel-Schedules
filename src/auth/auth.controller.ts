@@ -9,13 +9,19 @@ import { AuthGuard } from '@nestjs/passport';
 import { join } from 'path';
 import { unlink } from 'fs';
 import { Roles } from '../common/decorators/roles.decorator';
+import { Usertype } from '../data/entities/usertype';
+import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Controller('auth')
 export class AuthController {
 
   constructor(
+    @InjectRepository(Usertype)
+    private readonly usersRepository: Repository<Usertype>,
     private readonly authService: AuthService,
     private readonly usersService: UsersService,
+
   ) { }
 
   @Get()
@@ -62,6 +68,9 @@ export class AuthController {
     // }
 
     try {
+      console.log(user)
+      const usertype = await this.usersRepository.findOne({ where: { Name: 'Client'} });
+      user.usertype = usertype;
       await this.usersService.registerUser(user);
       return 'saved';
     } catch (error) {

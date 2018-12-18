@@ -1,13 +1,13 @@
+import { Optional } from '@nestjs/common';
 import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
   OneToOne,
   JoinColumn,
+  ManyToOne,
 } from 'typeorm';
 import { Usertype } from './usertype';
-import { Company } from './company';
-import { Customer } from './customer';
 
 @Entity('users')
 export class User {
@@ -20,17 +20,16 @@ export class User {
     @Column()
     password: string;
 
-    @OneToOne(type => Usertype, usertype => usertype.usertypeID)
-    @JoinColumn({ name: 'Usertype' })
-    usertype: number;
+    @ManyToOne(type => Usertype, usertype => usertype.usertypeID, {eager: true})
+    usertype: Usertype;
 
-    @Column( { name: 'CompanyName' } )
+    @Column( { nullable: true } )
     companyName: string;
 
-    @Column({ name: 'FirstName' })
+    @Column()
     firstName: string;
 
-    @Column({ name: 'LastName' })
+    @Column()
     lastName: string;
 
 }
