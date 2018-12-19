@@ -73,7 +73,7 @@ export class AuthController {
           // .findOne({ where: {id: user.companyName ? 2 : ( user.usertype  || 1) } });
       user.usertype = usertype;
       await this.usersService.registerUser(user);
-      return 'saved';
+      return 'user successfully added to DB';
     } catch (error) {
       await new Promise((resolve, reject) => {
 
