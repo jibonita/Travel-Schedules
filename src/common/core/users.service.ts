@@ -1,14 +1,14 @@
-import { GetUserDTO } from '../../models/user/get-user.dto';
 import { UserLoginDTO } from '../../models/user/user-login.dto';
 import { UserRegisterDTO } from '../../models/user/user-register.dto';
 import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { Repository, TransactionManager, EntityManager, Transaction } from 'typeorm';
-import { User } from './../../data/entities/user';
 import { InjectRepository, InjectEntityManager } from '@nestjs/typeorm';
 
 import * as bcrypt from 'bcrypt';
 import { JwtPayload } from './../../interfaces/jwt-payload';
 import { validate } from 'class-validator';
+import { User } from '../../data/entities/user';
+import { GetUserDTO } from '../../models/user/get-user.dto';
 
 @Injectable()
 export class UsersService {
@@ -22,7 +22,7 @@ export class UsersService {
     const userFound = await this.usersRepository.findOne({ where: { email: user.email } });
 
     if (userFound) {
-      throw new Error('User not found!');
+      throw new Error('Could not register: Email already exists!');
     }
 
     user.password = await bcrypt.hash(user.password, 10);
