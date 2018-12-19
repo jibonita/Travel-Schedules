@@ -11,13 +11,13 @@ export class UserRegisterDTO {
   // @Matches(/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}/)
   password: string;
 
-  @IsNumber()
+  // @IsNumber()
+  // @Matches(/[1-2]/)
   @IsOptional()
-  // @Matches(/[0-2]/)
   usertype: Usertype;
 
   @Optional()
-  copmanyName: string;
+  companyName: string;
 
   @IsString()
   firstName: string;

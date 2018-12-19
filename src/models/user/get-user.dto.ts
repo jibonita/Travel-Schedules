@@ -1,4 +1,5 @@
 import { IsString, Length, Matches, IsOptional } from 'class-validator';
+import { Usertype } from '../../data/entities/usertype';
 
 export class GetUserDTO {
 
@@ -7,5 +8,5 @@ export class GetUserDTO {
 
   password: string;
 
-  usertype: number;
+  usertype: Usertype;
 }
