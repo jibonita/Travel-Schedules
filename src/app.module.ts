@@ -7,6 +7,8 @@ import { CoreModule } from './common/core/core.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigService } from './config/config.service';
 import { RoutesModule } from './routes/routes.module';
+import { StopsService } from './stops/stops.service';
+import { StopsModule } from './stops/stops.module';
 
 @Module({
   imports: [
@@ -30,8 +32,9 @@ import { RoutesModule } from './routes/routes.module';
     UsersModule,
     CoreModule,
     RoutesModule,
+    StopsModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [StopsService],
 })
 export class AppModule { }
