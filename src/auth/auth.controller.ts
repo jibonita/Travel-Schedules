@@ -68,7 +68,9 @@ export class AuthController {
     // }
 
     try {
-      const usertype = await this.usersRepository.findOne({ where: { id: user.usertype || 1 } });
+      const usertype = await this.usersRepository
+          .findOne({ where: {id: user.companyName ? 2 : 1 } });
+          // .findOne({ where: {id: user.companyName ? 2 : ( user.usertype  || 1) } });
       user.usertype = usertype;
       await this.usersService.registerUser(user);
       return 'saved';

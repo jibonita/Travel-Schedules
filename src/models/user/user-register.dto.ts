@@ -16,7 +16,7 @@ export class UserRegisterDTO {
   @IsOptional()
   usertype: Usertype;
 
-  @Optional()
+  @IsOptional()
   companyName: string;
 
   @IsString()
