@@ -10,14 +10,14 @@ export class Ticket {
     ticketID: number;
 
     @Column()
-    @OneToOne(type => User)
+    @OneToOne(type => User, user => user.userID)
     userID: number;
 
     @Column()
-    @OneToOne(type => Route)
+    @OneToOne(type => Route, route => route.routeID)
     routeID: number;
 
     @Column()
-    @OneToOne(type => Stop)
-    endPoint: string;
+    @OneToOne(type => Stop, stop => stop.stopID)
+    endPoint: number;
 }
