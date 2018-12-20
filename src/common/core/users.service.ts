@@ -36,7 +36,7 @@ export class UsersService {
   async validateUser(payload: JwtPayload): Promise<GetUserDTO> {
     const userFound: any = await this.usersRepository.findOne({ where: { email: payload.email } });
     // console.log(userFound);
-    
+
     return userFound;
   }
 
@@ -57,5 +57,17 @@ export class UsersService {
 
   async getAll() {
     return this.usersRepository.find({});
+  }
+
+  async deleteUser(user: GetUserDTO) {
+    const userFound: GetUserDTO = await this.usersRepository
+        .findOne({ select: ['email'],
+        where: { email: user.email } });
+    console.log(userFound);
+    
+    if (!userFound) {
+      throw new BadRequestException('This user doesnt exist in DB!');
+    }
+    await this.usersRepository.delete(userFound);
   }
 }
