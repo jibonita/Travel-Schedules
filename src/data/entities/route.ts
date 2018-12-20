@@ -11,15 +11,17 @@ export class Route {
     routeID: number;
 
     @Column()
-    @OneToMany(type => Stop, stop => stop.stopID)
+    //@OneToMany(type => Stop, stop => stop.stopID)
+    @OneToOne(type => Stop, stop => stop.stopID)
     startPoint: number;
 
     @Column()
-    @OneToMany(type => Stop, stop => stop.stopID)
+    //@OneToMany(type => Stop, stop => stop.stopID)
+    @OneToOne(type => Stop, stop => stop.stopID)
     endPoint: number;
 
     @Column()
-    leaves: Date;
+    leaves: string;
 
     @Column()
     isApproved: boolean;
