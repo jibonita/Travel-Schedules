@@ -1,3 +1,4 @@
+import { Usertype } from './../data/entities/usertype';
 import { AddRouteDTO } from './../models/route/add-route.dto';
 import { AdminGuard } from './../common/guards/roles/admin.guard';
 import { AuthGuard } from '@nestjs/passport';
@@ -17,12 +18,22 @@ export class UsersController {
     return this.usersService.getAll();
   }
 
+  @Get('clients')
+  allclients() {
+    return this.usersService.getClients();
+  }
+
+  @Get('companies')
+  allcompanies() {
+    return this.usersService.getCompanies();
+  }
+
   @Delete()
   findOne(@Body(new ValidationPipe({
     transform: true,
     whitelist: true,
   }))user: GetUserDTO ) {
-    console.log(user);
     return this.usersService.deleteUser(user);
   }
+
 }

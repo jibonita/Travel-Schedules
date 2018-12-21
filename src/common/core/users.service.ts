@@ -59,12 +59,26 @@ export class UsersService {
     return this.usersRepository.find({});
   }
 
+  async getClients() {
+    return this.usersRepository.find({
+      usertype: {
+        id: 1,
+      },
+    });
+  }
+
+  async getCompanies() {
+    return this.usersRepository.find({
+      usertype: {
+        id: 2,
+      },
+    });
+  }
+
   async deleteUser(user: GetUserDTO) {
     const userFound: GetUserDTO = await this.usersRepository
         .findOne({ select: ['email'],
         where: { email: user.email } });
-    console.log(userFound);
-    
     if (!userFound) {
       throw new BadRequestException('This user doesnt exist in DB!');
     }

@@ -9,6 +9,7 @@ import { ConfigService } from './config/config.service';
 import { RoutesModule } from './routes/routes.module';
 import { StopsService } from './stops/stops.service';
 import { StopsModule } from './stops/stops.module';
+import { TicketsModules } from './tickets/tickets.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { StopsModule } from './stops/stops.module';
     CoreModule,
     RoutesModule,
     StopsModule,
+    TicketsModules,
   ],
   controllers: [],
   providers: [StopsService],
