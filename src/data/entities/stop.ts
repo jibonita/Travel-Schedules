@@ -1,6 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany, OneToOne } from 'typeorm';
 import { RouteStop } from './routestop';
 import { Route } from './route';
+import { Ticket } from './ticket';
 
 @Entity('stops')
 export class Stop {
@@ -11,6 +12,7 @@ export class Stop {
     // @OneToMany(type => Route, route => route.endPoint)
     @OneToOne(type => Route, route => route.startPoint)
     @OneToOne(type => Route, route => route.endPoint)
+    @OneToOne(type => Ticket, ticket => ticket.ticketID)
     stopID: number;
 
     @Column()

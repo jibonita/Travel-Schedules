@@ -11,7 +11,6 @@ export class StopsService {
         private readonly stopsRepository: Repository<Stop>,
    ) { }
 
-
     async getAll() {
         return this.stopsRepository.find({});
     }
@@ -25,7 +24,7 @@ export class StopsService {
 
         await this.stopsRepository.create(stop);
 
-        const result = await this.stopsRepository.save([stop]);
+        const result = await this.stopsRepository.save(stop);
 
         return result;
     }

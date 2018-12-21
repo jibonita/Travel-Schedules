@@ -3,7 +3,7 @@ import { RoutesService } from './routes.service';
 import bodyParser = require('body-parser');
 import { AddRouteDTO } from '../models/route/add-route.dto';
 
-@Controller('route')
+@Controller('routes')
 export class RoutesController {
 
   constructor(
@@ -16,11 +16,20 @@ export class RoutesController {
   }
 
   @Post(':add')
-  addRoute(@Body(new ValidationPipe({
+  async addRoute(@Body(new ValidationPipe({
     transform: true,
     whitelist: true,
-  }))
-  route: AddRouteDTO) {
-    return this.routesService.addRoute();
+  }))  route: AddRouteDTO)
+  : Promise<string> {
+      try {
+        const result = await this.routesService.addRoute(route);
+        return 'Route added';
+      } catch (error) {
+        await new Promise((resolve, reject) => {
+              resolve();
+        });
+
+        return (error.message);
+      }
   }
 }

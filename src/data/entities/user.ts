@@ -8,10 +8,12 @@ import {
   ManyToOne,
 } from 'typeorm';
 import { Usertype } from './usertype';
+import { Ticket } from './ticket';
 
 @Entity('users')
 export class User {
     @PrimaryGeneratedColumn()
+    @OneToOne(type => Ticket, ticket => ticket.ticketID)
     userID: number;
 
     @Column()

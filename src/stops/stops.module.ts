@@ -8,6 +8,6 @@ import { StopsService } from './stops.service';
   imports: [TypeOrmModule.forFeature([Stop])],
   providers: [StopsService],
   exports: [],
-  controllers: [StopsController]
+  controllers: [StopsController],
 })
 export class StopsModule {}
