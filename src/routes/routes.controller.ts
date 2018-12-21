@@ -10,19 +10,29 @@ export class RoutesController {
     private readonly routesService: RoutesService,
   ) { }
 
+  @Get(':id')
+  getOne(@Param() params) {
+    try {
+      return this.routesService.getRouteById(params.id);
+    } catch (error) {
+      return (error.message);
+    }
+
+  }
+
   @Get(':from/:to')
   allFromTo(@Param() params) {
     return this.routesService.getAllRoutesFromTo(params.from, params.to);
   }
 
-  @Post(':add')
+  @Post()
   async addRoute(@Body(new ValidationPipe({
     transform: true,
     whitelist: true,
   }))  route: AddRouteDTO)
   : Promise<string> {
       try {
-        const result = await this.routesService.addRoute(route);
+        await this.routesService.addRoute(route);
         return 'Route added';
       } catch (error) {
         await new Promise((resolve, reject) => {

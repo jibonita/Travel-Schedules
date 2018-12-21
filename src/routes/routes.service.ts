@@ -1,15 +1,17 @@
 
 import { Injectable } from '@nestjs/common';
-import { Repository } from 'typeorm';
+import { Repository, getRepository, getConnection } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Route } from '../data/entities/route';
 import { AddRouteDTO } from '../models/route/add-route.dto';
 import { Stop } from '../data/entities/stop';
 import { RouteStop } from '../data/entities/routestop';
 import { DBRouteDTO } from '../models/route/db-route.dto';
+import { User } from '../data/entities/user';
 
 @Injectable()
 export class RoutesService {
+
   constructor(
     @InjectRepository(Route)
       private readonly routesRepository: Repository<Route>,
@@ -18,11 +20,6 @@ export class RoutesService {
     @InjectRepository(RouteStop)
       private readonly routeStopsRepository: Repository<RouteStop>,
     ) { }
-
-  async getAllRoutesFromTo(from, to) {
-    return `From ${from} to ${to}`;
-    // return this.usersRepository.find({});
-  }
 
   async addRoute(route: AddRouteDTO ) {
     const allStopsSet = new Set([route.startPoint, ...route.stops, route.endPoint]);
@@ -33,12 +30,6 @@ export class RoutesService {
     }
 
     const newRoute: DBRouteDTO = route as DBRouteDTO;
-    // const newRoute = new Route();
-    // newRoute.startPoint = +allStopsArray[0];
-    // newRoute.endPoint = +allStopsArray[allStopsArray.length - 1];
-    // newRoute.leaves = route.leaves;
-    // newRoute.isApproved = true;
-    // newRoute.company = route.company;
 
     await this.routesRepository.create(newRoute);
 
@@ -65,4 +56,56 @@ export class RoutesService {
       }
   }
 
+  async getRouteById(id: string): Promise<any> {
+    const routeFound = await this.routesRepository.findOne({ where: { routeID: id } });
+    if (!routeFound) {
+      throw new Error(`Route ID:${id} does not exist`);
+    }
+
+    // this is temp until the Roses are added
+    const isLogged = false;
+
+    if (isLogged) {
+      // display route with inner stops
+
+    } else {
+      // display route only with start and end stop
+      const routeQB = await getConnection()
+      .createQueryBuilder()
+      .select([
+          'route.leaves',
+      ])
+      .addSelect(subQuery => {
+          return subQuery
+              .select('stop.name', 'name')
+              .from(Stop, 'stop')
+              .where(`stop.stopID = route.startPoint`);
+       }, 'from')
+      .addSelect(subQuery => {
+        return subQuery
+            .select('stop.name', 'name')
+            .from(Stop, 'stop')
+            .where(`stop.stopID = route.endPoint`);
+     }, 'to')
+     .addSelect(subQuery => {
+      return subQuery
+          .select('user.companyName', 'name')
+          .from(User, 'user')
+          .where(`user.userID = route.company`);
+      }, 'Company')
+      .from(Route, 'route')
+      .where(`route.routeID = ${id}`)
+      //.where('route.routeID = :routeID', { routeID : id })
+       .getRawMany();
+      
+
+      return routeQB;
+    }
+    
+  }
+
+  async getAllRoutesFromTo(from, to) {
+    return `From ${from} to ${to}`;
+    // return this.usersRepository.find({});
+  }
 }
