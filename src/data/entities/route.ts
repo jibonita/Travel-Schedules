@@ -10,7 +10,7 @@ export class Route {
 
     @PrimaryGeneratedColumn()
     @OneToMany(type => RouteStop, rstop => rstop.routeID)
-    routeID: RouteStop[];//number;
+    routeID: RouteStop[];
 
     @Column()
     @OneToOne(type => Stop, stop => stop.stopID)

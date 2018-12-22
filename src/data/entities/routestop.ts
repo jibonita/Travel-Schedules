@@ -19,7 +19,7 @@ export class RouteStop {
 @PrimaryColumn()
 routeID: number;
 
-@ManyToOne(() => Route, route => route.routeID, {eager: true})
+@ManyToOne(() => Route, route => route.routeID, {eager: true, onDelete: 'CASCADE'})
 @JoinColumn({ name: 'routeID' })
 route: Route;
 
