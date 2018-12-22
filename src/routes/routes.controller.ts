@@ -1,4 +1,4 @@
-import { Controller, Get, UseGuards, Query, Param, Post, Body, ValidationPipe } from '@nestjs/common';
+import { Controller, Get, UseGuards, Query, Param, Post, Body, ValidationPipe, Delete } from '@nestjs/common';
 import { RoutesService } from './routes.service';
 import bodyParser = require('body-parser');
 import { AddRouteDTO } from '../models/route/add-route.dto';
@@ -41,5 +41,15 @@ export class RoutesController {
 
         return (error.message);
       }
+  }
+
+  @Delete(':id')
+  delete(@Param() params) {
+    try {
+      this.routesService.deleteRoute(params.id);
+      return 'route deleted';
+    } catch (error) { 
+      return (error.message);
+    }
   }
 }

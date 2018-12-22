@@ -1,5 +1,5 @@
 
-import { Injectable } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { Repository, getRepository, getConnection, createQueryBuilder } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Route } from '../data/entities/route';
@@ -59,7 +59,7 @@ export class RoutesService {
   async getRouteById(id: string): Promise<any> {
     const routeFound = await this.routesRepository.findOne({ where: { routeID: id } });
     if (!routeFound) {
-      throw new Error(`Route ID:${id} does not exist`);
+      throw new BadRequestException(`Route ID:${id} does not exist`);
     }
 
     // NB!! this is temp until the Roles are added
@@ -82,8 +82,6 @@ export class RoutesService {
         .getRawMany();
 
       return routeQB;
-
-
 
     } else {
       // display route only with start and end stop
@@ -124,7 +122,14 @@ export class RoutesService {
     // return this.usersRepository.find({});
   }
 
-  async deleteRoute(id) {
+  async deleteRoute(id): Promise<any> {
+    const routeFound = await this.routesRepository
+        .findOne({ select: ['routeID'],
+        where: { routeID: id } });
+    if (!routeFound) {
+      throw new BadRequestException('This route doesnt exist in DB!');
+    }
 
+    await this.routesRepository.delete(routeFound);
   }
 }
