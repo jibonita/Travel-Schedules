@@ -117,7 +117,21 @@ export class RoutesService {
 
   }
 
+  async getAllRoutes() {
+    // NB!! Temporary check if it's a company until the Roles are added
+    const isCompanyLogged = false;
+    if (isCompanyLogged) {
+      const companyID = 14;
+      return this.routesRepository.find({
+        where: { company: companyID },
+      });
+    } else {
+        return this.routesRepository.find({});
+    }
+   }
+
   async getAllRoutesFromTo(from, to) {
+    // TODO:....
     return `From ${from} to ${to}`;
     // return this.usersRepository.find({});
   }

@@ -10,6 +10,16 @@ export class RoutesController {
     private readonly routesService: RoutesService,
   ) { }
 
+  @Get()
+  all(@Param() params) {
+    try {
+      return this.routesService.getAllRoutes();
+    } catch (error) {
+      return (error.message);
+    }
+
+  }
+
   @Get(':id')
   getOne(@Param() params) {
     try {
@@ -17,7 +27,6 @@ export class RoutesController {
     } catch (error) {
       return (error.message);
     }
-
   }
 
   @Get(':from/:to')
