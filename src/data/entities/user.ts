@@ -6,6 +6,7 @@ import {
   OneToOne,
   JoinColumn,
   ManyToOne,
+  OneToMany,
 } from 'typeorm';
 import { Usertype } from './usertype';
 import { Ticket } from './ticket';
@@ -13,7 +14,6 @@ import { Ticket } from './ticket';
 @Entity('users')
 export class User {
     @PrimaryGeneratedColumn()
-    @OneToOne(type => Ticket, ticket => ticket.ticketID)
     userID: number;
 
     @Column()
@@ -21,17 +21,20 @@ export class User {
 
     @Column()
     password: string;
-
-    @ManyToOne(type => Usertype, usertype => usertype.usertypeID, {eager: true})
-    usertype: Usertype;
-
+    
     @Column( { nullable: true } )
     companyName: string;
-
+    
     @Column()
     firstName: string;
-
+    
     @Column()
     lastName: string;
+    
+    @ManyToOne(type => Usertype, usertype => usertype.usertypeID, {eager: true})
+    usertype: Usertype;
+    
+    @OneToMany(type => Ticket, ticket => ticket.user)
+    ticket: Ticket[];
 
 }

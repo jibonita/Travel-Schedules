@@ -1,23 +1,23 @@
 import { User } from './user';
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne, ManyToOne, JoinColumn } from 'typeorm';
 import { Route } from './route';
 import { Stop } from './stop';
 
-@Entity()
+@Entity('tickets')
 export class Ticket {
 
     @PrimaryGeneratedColumn()
     ticketID: number;
 
-    @Column()
-    @OneToOne(type => User, user => user.userID)
-    userID: number;
+    @JoinColumn({name: 'user'})
+    @ManyToOne(type => User, user => user.userID, {eager: true})
+    user: User;
 
-    @Column()
-    @OneToOne(type => Route, route => route.routeID)
-    routeID: number;
+    @JoinColumn({name: 'route'})
+    @ManyToOne(type => Route, route => route.routeID, {eager: true})
+    route: Route;
 
-    @Column()
-    @OneToOne(type => Stop, stop => stop.stopID)
-    endPoint: number;
+    @JoinColumn({name: 'endStop'})
+    @ManyToOne(type => Stop, stop => stop.stopID, {eager: true})
+    endStop: Stop;
 }
