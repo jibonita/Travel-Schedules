@@ -1,6 +1,6 @@
 
 import { Injectable } from '@nestjs/common';
-import { Repository, getRepository, getConnection } from 'typeorm';
+import { Repository, getRepository, getConnection, createQueryBuilder } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Route } from '../data/entities/route';
 import { AddRouteDTO } from '../models/route/add-route.dto';
@@ -44,7 +44,7 @@ export class RoutesService {
     return (stopsFound.length === allStopsArray.length);
   }
 
-  async addRouteStops(routeID: number, allStopsArray: Array<string | number>): Promise<any> {
+  async addRouteStops(routeID: any, allStopsArray: Array<string | number>): Promise<any> {
       let orderIndex = 1;
       for (const stop of allStopsArray) {
         const routeStop = new RouteStop();
@@ -62,11 +62,28 @@ export class RoutesService {
       throw new Error(`Route ID:${id} does not exist`);
     }
 
-    // this is temp until the Roses are added
+    // NB!! this is temp until the Roles are added
     const isLogged = false;
 
     if (isLogged) {
       // display route with inner stops
+      const routeQB = await createQueryBuilder(Route, 'route')
+        .innerJoinAndSelect(RouteStop, 'routestop', 'routestop.routeID = route.routeID')
+        .innerJoinAndSelect(Stop, 'stop', 'routestop.stopID = stop.stopID')
+        .innerJoinAndSelect(User, 'user', 'user.userID = route.company')
+        .where('route.routeID = :routeID', { routeID : id })
+        .select([
+          'stop.name',
+          'routestop.stopOrder',
+          'leaves',
+          'companyName',
+        ])
+        .orderBy('stopOrder', 'ASC')
+        .getRawMany();
+
+      return routeQB;
+
+
 
     } else {
       // display route only with start and end stop
@@ -92,20 +109,22 @@ export class RoutesService {
           .select('user.companyName', 'name')
           .from(User, 'user')
           .where(`user.userID = route.company`);
-      }, 'Company')
+      }, 'company')
       .from(Route, 'route')
-      .where(`route.routeID = ${id}`)
-      //.where('route.routeID = :routeID', { routeID : id })
+      .where('route.routeID = :routeID', { routeID : id })
        .getRawMany();
-      
 
       return routeQB;
     }
-    
+
   }
 
   async getAllRoutesFromTo(from, to) {
     return `From ${from} to ${to}`;
     // return this.usersRepository.find({});
+  }
+
+  async deleteRoute(id) {
+
   }
 }
