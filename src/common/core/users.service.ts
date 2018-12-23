@@ -35,7 +35,6 @@ export class UsersService {
 
   async validateUser(payload: JwtPayload): Promise<GetUserDTO> {
     const userFound: any = await this.usersRepository.findOne({ where: { email: payload.email } });
-    // console.log(userFound);
 
     return userFound;
   }
@@ -44,7 +43,6 @@ export class UsersService {
     const userFound: GetUserDTO = await this.usersRepository
         .findOne({ select: ['email', 'password', 'usertype'],
                   where: { email: user.email } });
-
     if (userFound) {
       const result = await bcrypt.compare(user.password, userFound.password);
       if (result) {

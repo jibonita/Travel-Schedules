@@ -21,19 +21,19 @@ export class User {
 
     @Column()
     password: string;
-    
+
     @Column( { nullable: true } )
     companyName: string;
-    
+
     @Column()
     firstName: string;
-    
+
     @Column()
     lastName: string;
-    
+
     @ManyToOne(type => Usertype, usertype => usertype.usertypeID, {eager: true})
     usertype: Usertype;
-    
+
     @OneToMany(type => Ticket, ticket => ticket.user)
     ticket: Ticket[];
 
