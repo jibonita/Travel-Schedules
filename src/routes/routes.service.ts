@@ -119,9 +119,9 @@ export class RoutesService {
 
   async getAllRoutes() {
     // NB!! Temporary check if it's a company until the Roles are added
-    const isCompanyLogged = false;
+    const isCompanyLogged = true;
     if (isCompanyLogged) {
-      const companyID = 14;
+      const companyID = 4;
       return this.routesRepository.find({
         where: { company: companyID },
       });
@@ -131,10 +131,29 @@ export class RoutesService {
    }
 
   async getAllRoutesFromTo(from, to) {
-    // TODO:....
-    return `From ${from} to ${to}`;
-    // return this.usersRepository.find({});
-  }
+    const routeQB = await createQueryBuilder(Route, 'route')
+        .innerJoinAndSelect(RouteStop, 'rsStart', 'rsStart.routeID = route.routeID')
+        .innerJoinAndSelect(RouteStop, 'rsEnd', 'rsEnd.routeID = route.routeID')
+        // .innerJoinAndSelect(Stop, 'stop', 'routestop.stopID = stop.stopID')
+        // .innerJoinAndSelect(User, 'user', 'user.userID = route.company')
+        .select([
+          // 'stop.name',
+          // 'routestop.stopOrder',
+          // 'leaves',
+          // 'companyName',
+        ])
+        .orderBy('stopOrder', 'ASC')
+        .getSql();
+       // .getRawMany();
+
+    
+    /*select r.routeid, startpoint, endpoint from routes r 
+join routestops s on r.routeID = s.routeID and s.stopID=2
+join routestops e on r.routeID = e.routeID and e.stopID=5
+and s.stopOrder <e.stopOrder;
+*/
+    return routeQB;
+   }
 
   async deleteRoute(id): Promise<any> {
     const routeFound = await this.routesRepository

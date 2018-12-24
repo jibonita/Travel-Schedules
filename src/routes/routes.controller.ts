@@ -10,14 +10,19 @@ export class RoutesController {
     private readonly routesService: RoutesService,
   ) { }
 
+  
   @Get()
-  all(@Param() params) {
+  all(@Query() query) {
     try {
-      return this.routesService.getAllRoutes();
+      if(query.from && query.to){
+        return this.routesService.getAllRoutesFromTo(query.from, query.to);
+      }
+      else {
+        return this.routesService.getAllRoutes();
+      }
     } catch (error) {
       return (error.message);
     }
-
   }
 
   @Get(':id')
@@ -29,11 +34,7 @@ export class RoutesController {
     }
   }
 
-  @Get(':from/:to')
-  allFromTo(@Param() params) {
-    return this.routesService.getAllRoutesFromTo(params.from, params.to);
-  }
-
+  
   @Post()
   async addRoute(@Body(new ValidationPipe({
     transform: true,
