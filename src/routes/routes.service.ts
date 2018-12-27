@@ -63,7 +63,7 @@ export class RoutesService {
     }
 
     // NB!! this is temp until the Roles are added
-    const isLogged = false;
+    const isLogged = true;
 
     if (isLogged) {
       // display route with inner stops
@@ -134,24 +134,32 @@ export class RoutesService {
     const routeQB = await createQueryBuilder(Route, 'route')
         .innerJoinAndSelect(RouteStop, 'rsStart', 'rsStart.routeID = route.routeID')
         .innerJoinAndSelect(RouteStop, 'rsEnd', 'rsEnd.routeID = route.routeID')
-        // .innerJoinAndSelect(Stop, 'stop', 'routestop.stopID = stop.stopID')
-        // .innerJoinAndSelect(User, 'user', 'user.userID = route.company')
+        .where("rsStart.StopID = :startStop AND rsEnd.StopID = :endStop")
+        .setParameters({ startStop: from, endStop: to })
         .select([
-          // 'stop.name',
-          // 'routestop.stopOrder',
-          // 'leaves',
-          // 'companyName',
-        ])
-        .orderBy('stopOrder', 'ASC')
-        .getSql();
-       // .getRawMany();
+          'route.routeID',
+          'leaves',
+         ])
+        .addSelect(subQuery => {
+          return subQuery
+              .select('stop.name', 'name')
+              .from(Stop, 'stop')
+              .where(`stop.stopID = route.startPoint`);
+       }, 'from')
+       .addSelect(subQuery => {
+        return subQuery
+            .select('stop.name', 'name')
+            .from(Stop, 'stop')
+            .where(`stop.stopID = route.endPoint`);
+        }, 'to')
+        .addSelect(subQuery => {
+          return subQuery
+              .select('user.companyName', 'company')
+              .from(User, 'user')
+              .where(`user.UserID = route.company`);
+        }, 'to')
+       .getRawMany();
 
-    
-    /*select r.routeid, startpoint, endpoint from routes r 
-join routestops s on r.routeID = s.routeID and s.stopID=2
-join routestops e on r.routeID = e.routeID and e.stopID=5
-and s.stopOrder <e.stopOrder;
-*/
     return routeQB;
    }
 
