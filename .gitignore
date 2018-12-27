@@ -5,6 +5,7 @@ build/
 tmp/
 temp/
 ormconfig.json
-migration/
+src/data/migrations/
 .env
-package-lock.json
+package-lock.json/
+migrations/
