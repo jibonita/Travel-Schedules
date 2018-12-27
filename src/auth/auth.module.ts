@@ -28,7 +28,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     }),
     CoreModule],
   providers: [AuthService, JwtStrategy],
-  exports: [AuthService],
+  exports: [AuthService, PassportModule],
   controllers: [AuthController],
 
 })

@@ -17,6 +17,7 @@ import { RouteStop } from '../data/entities/routestop';
     TypeOrmModule.forFeature([Route]),
     TypeOrmModule.forFeature([Stop]),
     TypeOrmModule.forFeature([RouteStop]),
+    AuthModule,
    ],
   providers: [RoutesService],
   exports: [],

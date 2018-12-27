@@ -56,14 +56,11 @@ export class RoutesService {
       }
   }
 
-  async getRouteById(id: string): Promise<any> {
+  async getRouteById(id: string, isLogged?: boolean): Promise<any> {
     const routeFound = await this.routesRepository.findOne({ where: { routeID: id } });
     if (!routeFound) {
       throw new BadRequestException(`Route ID:${id} does not exist`);
     }
-
-    // NB!! this is temp until the Roles are added
-    const isLogged = true;
 
     if (isLogged) {
       // display route with inner stops
@@ -117,11 +114,8 @@ export class RoutesService {
 
   }
 
-  async getAllRoutes() {
-    // NB!! Temporary check if it's a company until the Roles are added
-    const isCompanyLogged = true;
-    if (isCompanyLogged) {
-      const companyID = 4;
+  async getAllRoutes(companyID) {
+    if (companyID) {
       return this.routesRepository.find({
         where: { company: companyID },
       });
@@ -134,7 +128,7 @@ export class RoutesService {
     const routeQB = await createQueryBuilder(Route, 'route')
         .innerJoinAndSelect(RouteStop, 'rsStart', 'rsStart.routeID = route.routeID')
         .innerJoinAndSelect(RouteStop, 'rsEnd', 'rsEnd.routeID = route.routeID')
-        .where("rsStart.StopID = :startStop AND rsEnd.StopID = :endStop")
+        .where('rsStart.StopID = :startStop AND rsEnd.StopID = :endStop')
         .setParameters({ startStop: from, endStop: to })
         .select([
           'route.routeID',
