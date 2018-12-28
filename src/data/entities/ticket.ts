@@ -10,7 +10,7 @@ export class Ticket {
     ticketID: number;
 
     @JoinColumn({name: 'user'})
-    @ManyToOne(type => User, user => user.userID, {eager: true})
+    @ManyToOne(type => User, user => user.userID, {eager: true, onDelete: 'CASCADE'})
     user: User;
 
     @JoinColumn({name: 'route'})
