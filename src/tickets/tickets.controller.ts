@@ -1,8 +1,10 @@
 import { AuthGuard } from '@nestjs/passport';
 import { AddTicketDTO } from './../models/ticket/add-ticket.dto';
-import { Controller, Post, ValidationPipe, Body, UseGuards, Get, Param } from '@nestjs/common';
+import { Controller, Post, ValidationPipe, Body, UseGuards, Get, Param, ExecutionContext, Request, BadRequestException, Delete } from '@nestjs/common';
 import { TicketsService } from './tickets.service';
 import { Roles } from '../common/decorators/roles.decorator';
+import { log } from 'util';
+import { throwError } from 'rxjs';
 
 @Controller('tickets')
 
@@ -14,18 +16,28 @@ export class TicketsController {
     @Get(':user')
     @UseGuards(AuthGuard())
     @Roles('client')
-    allPerUser(@Param() params) {
+    allPerUser(@Param() params, @Request() req) {
         try {
-            return this.ticketsService.getAllUserTickets(params.user);
+           if ( +req.user.userID === +params.user) {
+                return this.ticketsService.getAllUserTickets(params.user);
+            }
+           throw new BadRequestException('User trying to access somebody else\'s data');
         } catch (error) {
             return error.message;
         }
     }
 
+    @Get('route/:id')
+    @UseGuards(AuthGuard())
+    @Roles('company')
+    allTPerRoute() {
+        throw new Error ('Not Implemented');
+    }
+
 
     @Post()
-    // @UseGuards(AuthGuard())
-    // @Roles('client')
+    @UseGuards(AuthGuard())
+    @Roles('client')
     async addTicket(@Body(new ValidationPipe({
         transform: true,
         whitelist: true,
@@ -38,4 +50,10 @@ export class TicketsController {
             }
     }
 
+    @Delete(':id')
+    @UseGuards(AuthGuard())
+    @Roles('client', 'company')
+    deleteTicket() {
+        throw new Error ('Not Implemented');
+    }
 }
