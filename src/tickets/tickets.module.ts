@@ -5,9 +5,13 @@ import { TicketsController } from './tickets.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CoreModule } from '../common/core/core.module';
 import { AuthModule } from '../auth/auth.module';
+import { User } from '../data/entities/user';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([Ticket]), CoreModule, AuthModule],
+    imports: [
+        TypeOrmModule.forFeature([Ticket]),
+        TypeOrmModule.forFeature([User]),
+    AuthModule],
     providers: [TicketsService],
     exports: [],
     controllers: [TicketsController],

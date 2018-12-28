@@ -37,6 +37,6 @@ import { TicketsModules } from './tickets/tickets.module';
     TicketsModules,
   ],
   controllers: [],
-  providers: [StopsService],
+  providers: [],
 })
 export class AppModule { }
