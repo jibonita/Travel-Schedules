@@ -77,17 +77,21 @@ describe('AuthController', () => {
     
   });
 
-  /// BUGGY TEST
-  it('should throw when AuthService does not return a token', async () => {
+   it.skip('should display exception message thrown when AuthService does not return a token', async () => {
     const user = new UserLoginDTO();
     jest.spyOn(authService, 'signIn').mockImplementation(() => {
       return null;
     });
-    expect(() => async function(){
-          await authCtrl.sign(user)
-      })
-      //.toReturn();
-      //.toReturn('token');
-      .toThrow(BadRequestException);  // ("Wrong credentials!");
+
+    expect(
+      (async () => (await authCtrl.sign(user)))
+      ().catch(
+          (msg) => {
+            return (msg.message.message === 'Wrong credentials!' )
+          }
+        )
+      )
+      .toBeTruthy();
+       
   });
 });
