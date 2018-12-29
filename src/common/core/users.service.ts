@@ -27,10 +27,10 @@ export class UsersService {
     }
 
     user.password = await bcrypt.hash(user.password, 10);
-    await this.usersRepository.create(user);
+    await this.usersRepository.create(<User>user);
 
-    const result = await this.usersRepository.save([user]);
-
+    const result = await this.usersRepository.save(<User>user);
+    
     return result;
   }
 
