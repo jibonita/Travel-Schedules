@@ -9,6 +9,7 @@ import { JwtPayload } from './../../interfaces/jwt-payload';
 import { validate } from 'class-validator';
 import { User } from '../../data/entities/user';
 import { GetUserDTO } from '../../models/user/get-user.dto';
+import { GetUserEmailDTO } from '../../models/user/user-email.dto';
 
 @Injectable()
 export class UsersService {
@@ -73,8 +74,8 @@ export class UsersService {
     });
   }
 
-  async deleteUser(user: GetUserDTO) {
-    const userFound: GetUserDTO = await this.usersRepository
+  async deleteUser(user: GetUserEmailDTO) {
+    const userFound = await this.usersRepository
         .findOne({ select: ['email'],
         where: { email: user.email } });
     if (!userFound) {

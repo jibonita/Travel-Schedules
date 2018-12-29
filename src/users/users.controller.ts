@@ -3,6 +3,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { Controller, Get, UseGuards, Delete, Body, ValidationPipe, Request } from '@nestjs/common';
 import { UsersService } from './../common/core/users.service';
 import { GetUserDTO } from '../models/user/get-user.dto';
+import { GetUserEmailDTO } from '../models/user/user-email.dto';
 
 @Controller('users')
 @UseGuards(AuthGuard(), AdminGuard)
@@ -15,20 +16,16 @@ export class UsersController {
 
   @Get()
   async root(): Promise<any> {
-
-    // if (req.user.usertype.id !== 3) {
-    //   throw new BadRequestException('no access');
-    // }
-     return this.usersService.getAll();
+    return this.usersService.getAll();
   }
 
   @Get('clients')
-  allclients() {
+  allClients() {
     return this.usersService.getClients();
   }
 
   @Get('companies')
-  allcompanies() {
+  allCompanies() {
     return this.usersService.getCompanies();
   }
 
@@ -36,7 +33,7 @@ export class UsersController {
   findOne(@Body(new ValidationPipe({
     transform: true,
     whitelist: true,
-  }))user: GetUserDTO ) {
+  }))user: GetUserEmailDTO ) {
     return this.usersService.deleteUser(user);
   }
 

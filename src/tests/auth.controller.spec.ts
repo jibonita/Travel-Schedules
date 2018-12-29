@@ -81,7 +81,7 @@ describe('AuthController', () => {
       
     });
 
-    it.only('should display exception message thrown when AuthService does not return a token', async () => {
+    it('should display exception message thrown when AuthService does not return a token', async () => {
       const user = new UserLoginDTO();
       jest.spyOn(authService, 'signIn').mockImplementation(() => {
         return null;
@@ -93,21 +93,11 @@ describe('AuthController', () => {
             expect(msg.message.message).toBe('Wrong credentials!');
             }
       );
-
-      // expect(
-      //   (async () => (await authCtrl.sign(user)))
-      //   ().catch(
-      //       (msg) => {
-      //         return (msg.message.message === 'Wrong credentials!' )
-      //       }
-      //     )
-      //   )
-      //   .toBeTruthy();
         
     });
   });
 
-  describe.skip('register method', () => {
+  describe('register method', () => {
     let authService: AuthService = new AuthService(null, null);
     let userService: UsersService = new UsersService(null);
     let authCtrl: AuthController;
