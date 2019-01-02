@@ -1,23 +1,23 @@
-import { Test } from "@nestjs/testing";
-import { PassportModule } from "@nestjs/passport";
-import { UsersService } from "../common/core/users.service";
-import { GetUserDTO } from "../models/user/get-user.dto";
-import { UserRegisterDTO } from "../models/user/user-register.dto";
+import { Test, TestingModule } from '@nestjs/testing';
+import { PassportModule } from '@nestjs/passport';
+import { UsersService } from '../common/core/users.service';
+import { UserRegisterDTO } from '../models/user/user-register.dto';
+import { User } from '../data/entities/user';
 
-
-//BUGGY !!!
+// BUGGY !!!
 
 describe('UserService', () => {
     describe('registerUser method should', () => {
         let userSrvc: UsersService;
-        
-        beforeAll(async () => {
-          const module = await Test.createTestingModule({
+        let testingModule: TestingModule;
+
+        beforeEach(async () => {
+          testingModule = await Test.createTestingModule({
             imports: [PassportModule.register({
               defaultStrategy: 'jwt',
             })],
             controllers: [],
-            providers: [
+            providers: [UsersService,
               {
                 provide: 'UserRepository',
                 useValue: {
@@ -27,28 +27,59 @@ describe('UserService', () => {
                 },
               }],
           }).compile();
-    
-          userSrvc = module.get<UsersService>(UsersService);
+
+          userSrvc = testingModule.get<UsersService>(UsersService);
         });
 
-        it(' throw when user already exists', async () => {
+        it.only(' throw when user already exists', async () => {
             const user = new UserRegisterDTO();
-            // jest.spyOn(UserRepository, 'findOne').mockImplementation(()=>{
-            //     return null;
+            testingModule = await Test.createTestingModule({
+              imports: [PassportModule.register({
+                defaultStrategy: 'jwt',
+              })],
+              controllers: [],
+              providers: [UsersService,
+                {
+                  provide: 'UserRepository',
+                  useValue: {
+                    findOne: () => {
+                      return new User();
+                    },
+                  },
+                }],
+            }).compile();
+            userSrvc = testingModule.get<UsersService>(UsersService);
+
+            // jest.mock('./mocks/userRepo.mock', () => {
+            //   return jest.fn().mockImplementation(() => {
+            //     return {findOne: () => {
+            //       return new User();
+            //     }};
+            //   });
             // });
-           expect(await userSrvc.registerUser(user)).toThrow();
+
+            await userSrvc.registerUser(user)
+              .catch((error) => {
+                  expect(error).toBeInstanceOf(Error);
+                  expect(error.message).toBe('Could not register: Email already exists!');
+              });
         });
 
+        // tslint:disable-next-line:no-empty
         it('call userRepository "create" method', async () => {
-            
+          const user = new UserRegisterDTO();
+          await userSrvc.registerUser(user);
+          // ...
         });
 
+        // tslint:disable-next-line:no-empty
         it('call userRepository "save" method', async () => {
-            
+
         });
 
+        // tslint:disable-next-line:no-empty
         it('return registerUserDTO', async () => {
-            
+
         });
     });
 

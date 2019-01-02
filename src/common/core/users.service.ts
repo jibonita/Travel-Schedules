@@ -23,14 +23,14 @@ export class UsersService {
     const userFound = await this.usersRepository.findOne({ where: { email: user.email } });
 
     if (userFound) {
-      throw new Error('Could not register: Email already exists!');
+      throw Error('Could not register: Email already exists!');
     }
 
     user.password = await bcrypt.hash(user.password, 10);
-    await this.usersRepository.create(<User>user);
+    await this.usersRepository.create(user as User);
 
-    const result = await this.usersRepository.save(<User>user);
-    
+    const result = await this.usersRepository.save(user as User);
+
     return result;
   }
 

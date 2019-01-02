@@ -14,7 +14,7 @@ jest.mock('../common/core/users.service');
 describe('AuthController', () => {
 
   describe('sign method', () => {
-    let authService: AuthService = new AuthService(null, null);
+    const authService: AuthService = new AuthService(null, null);
     let authCtrl: AuthController;
     let jwtServiceMock: JwtServiceMock;
 
@@ -51,7 +51,7 @@ describe('AuthController', () => {
       await authCtrl.sign(user);
       expect(authService.signIn).toHaveBeenCalledTimes(1);
     });
-  {
+    {
     // it.skip('should call AuthService signIn method', async () => {
     //   // Arrange
     //   const userService = new UsersService(null);
@@ -78,7 +78,7 @@ describe('AuthController', () => {
       });
       const result = await authCtrl.sign(user);
       expect(result).toBe('custom-token');
-      
+
     });
 
     it('should display exception message thrown when AuthService does not return a token', async () => {
@@ -88,18 +88,18 @@ describe('AuthController', () => {
       });
 
       await authCtrl.sign(user)
-        .catch((msg) => {
-            expect(msg).toBeInstanceOf(BadRequestException);
-            expect(msg.message.message).toBe('Wrong credentials!');
-            }
+        .catch((error) => {
+            expect(error).toBeInstanceOf(BadRequestException);
+            expect(error.message.message).toBe('Wrong credentials!');
+            },
       );
-        
+
     });
   });
 
   describe('register method', () => {
-    let authService: AuthService = new AuthService(null, null);
-    let userService: UsersService = new UsersService(null);
+    const authService: AuthService = new AuthService(null, null);
+    const userService: UsersService = new UsersService(null);
     let authCtrl: AuthController;
 
     beforeAll(async () => {
@@ -145,26 +145,25 @@ describe('AuthController', () => {
       });
       await authCtrl.register(user);
       expect(userService.registerUser).toHaveBeenCalledTimes(1);
-    });  
+    });
 
     it('should return message on success', async () => {
       const user = new UserRegisterDTO();
       jest.spyOn(userService, 'registerUser').mockImplementation(() => {
         return 'registered-mock';
       });
-      
+
       expect(await authCtrl.register(user)).toBe('user successfully added to DB');
-    }); 
-    
+    });
+
     it('should return thrown error message on UserService registerUser fail', async () => {
       const user = new UserRegisterDTO();
       jest.spyOn(userService, 'registerUser').mockImplementation(() => {
         throw new Error('reg-failed');
       });
-      
-      expect(await authCtrl.register(user)).toBe('reg-failed');
-    });  
 
-    
+      expect(await authCtrl.register(user)).toBe('reg-failed');
+    });
+
   });
 });
