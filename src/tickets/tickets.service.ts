@@ -23,6 +23,11 @@ export class TicketsService {
         ticket.user = ticketDTO.userID;
         ticket.route = ticketDTO.routeID;
         ticket.endStop = ticketDTO.endStop;
+        const routeFound: any = await this.routeRepository.findOne({ where: { routeID: ticket.route } });
+
+        if (+routeFound.startPoint === +ticket.endStop) {
+            throw new BadRequestException('startpoint and endpoint cant be the same ');
+        }
 
         await this.ticketsRepository.create(ticket);
         const result = await this.ticketsRepository.save([ticket]);
