@@ -6,11 +6,13 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { CoreModule } from '../common/core/core.module';
 import { AuthModule } from '../auth/auth.module';
 import { User } from '../data/entities/user';
+import { Route } from '../data/entities/route';
 
 @Module({
     imports: [
         TypeOrmModule.forFeature([Ticket]),
         TypeOrmModule.forFeature([User]),
+        TypeOrmModule.forFeature([Route]),
     AuthModule],
     providers: [TicketsService],
     exports: [],

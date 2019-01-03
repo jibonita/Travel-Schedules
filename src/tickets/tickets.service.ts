@@ -5,6 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Ticket } from '../data/entities/ticket';
 import { User } from '../data/entities/user';
 import { Repository } from 'typeorm';
+import { Route } from '../data/entities/route';
 
 @Injectable()
 export class TicketsService {
@@ -13,6 +14,8 @@ export class TicketsService {
         private readonly ticketsRepository: Repository<Ticket>,
         @InjectRepository(User)
         private readonly usersRepository: Repository<User>,
+        @InjectRepository(Route)
+        private readonly routeRepository: Repository<Route>,
         ) { }
 
     async addTicket(ticketDTO: AddTicketDTO) {
@@ -42,5 +45,14 @@ export class TicketsService {
           throw new BadRequestException('This ticket doesnt exist in DB!');
         }
         await this.ticketsRepository.delete(ticketFound);
+      }
+      async getAllTicketsForRoute(routeId, companyID) {
+        const routeFound = await this.routeRepository.findOne({routeID: routeId, company: companyID});
+        console.log(routeFound);
+
+        if (!routeFound) {
+            throw new BadRequestException('You dont have access to this route');
+        }
+        return this.ticketsRepository.find({route: routeId, company: companyID});
       }
 }

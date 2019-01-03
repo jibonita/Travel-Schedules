@@ -30,8 +30,8 @@ export class TicketsController {
     @Get('route/:id')
     @UseGuards(AuthGuard())
     @Roles('company')
-    allTPerRoute() {
-        throw new Error ('Not Implemented');
+    getAllTicketsForRoute(@Param() params, @Request() req) {
+        return this.ticketsService.getAllTicketsForRoute(params.id, req.user.userID);
     }
 
     @Post()
