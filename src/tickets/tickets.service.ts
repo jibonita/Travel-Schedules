@@ -1,6 +1,6 @@
 import { AddTicketDTO } from './../models/ticket/add-ticket.dto';
 
-import { Injectable } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Ticket } from '../data/entities/ticket';
 import { User } from '../data/entities/user';
@@ -31,7 +31,16 @@ export class TicketsService {
         const userFound: any = await this.usersRepository.findOne({ where: { userID: userid } });
         if (userFound) {
             return this.ticketsRepository.find({ where: {user: userid} });
-            
+
         }
     }
+    async deleteTicket(id): Promise<any> {
+        const ticketFound = await this.ticketsRepository
+            .findOne({ select: ['ticketID'],
+            where: { ticketID: id } });
+        if (!ticketFound) {
+          throw new BadRequestException('This ticket doesnt exist in DB!');
+        }
+        await this.ticketsRepository.delete(ticketFound);
+      }
 }

@@ -34,7 +34,6 @@ export class TicketsController {
         throw new Error ('Not Implemented');
     }
 
-
     @Post()
     @UseGuards(AuthGuard())
     @Roles('client')
@@ -53,7 +52,12 @@ export class TicketsController {
     @Delete(':id')
     @UseGuards(AuthGuard())
     @Roles('client', 'company')
-    deleteTicket() {
-        throw new Error ('Not Implemented');
-    }
+    delete(@Param() params) {
+        try {
+          this.ticketsService.deleteTicket(params.id);
+          return 'ticket deleted';
+        } catch (error) {
+          return (error.message);
+        }
+      }
 }
