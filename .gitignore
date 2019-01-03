@@ -9,3 +9,4 @@ src/data/migrations/
 .env
 package-lock.json/
 migrations/
+coverage/
