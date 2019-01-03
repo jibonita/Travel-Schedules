@@ -79,7 +79,7 @@ export class UsersService {
         .findOne({ select: ['email'],
         where: { email: user.email } });
     if (!userFound) {
-      throw new BadRequestException('This user doesnt exist in DB!');
+      throw new BadRequestException('This user doesn\'t exist in DB!');
     }
     await this.usersRepository.delete(userFound);
   }

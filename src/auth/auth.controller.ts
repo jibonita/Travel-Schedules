@@ -33,9 +33,9 @@ export class AuthController {
     transform: true,
     whitelist: true,
   })) user: UserLoginDTO): Promise<string> {
-    
+
     const token = await this.authService.signIn(user);
-    
+
     if (!token) {
       throw new BadRequestException('Wrong credentials!');
     }
@@ -50,7 +50,7 @@ export class AuthController {
       whitelist: true,
     }))
     user: UserRegisterDTO ): Promise<string> {
-    
+
     try {
       const usertype = await this.usersRepository
           .findOne({ where: {id: user.companyName ? 2 : 1 } });
