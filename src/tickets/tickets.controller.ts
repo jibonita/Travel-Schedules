@@ -30,10 +30,9 @@ export class TicketsController {
     @Get('route/:id')
     @UseGuards(AuthGuard())
     @Roles('company')
-    allTPerRoute() {
-        throw new Error ('Not Implemented');
+    getAllTicketsForRoute(@Param() params, @Request() req) {
+        return this.ticketsService.getAllTicketsForRoute(params.id, req.user.userID);
     }
-
 
     @Post()
     @UseGuards(AuthGuard())
@@ -53,7 +52,12 @@ export class TicketsController {
     @Delete(':id')
     @UseGuards(AuthGuard())
     @Roles('client', 'company')
-    deleteTicket() {
-        throw new Error ('Not Implemented');
-    }
+    delete(@Param() params) {
+        try {
+          this.ticketsService.deleteTicket(params.id);
+          return 'ticket deleted';
+        } catch (error) {
+          return (error.message);
+        }
+      }
 }
