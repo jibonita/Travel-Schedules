@@ -39,7 +39,7 @@ export class UsersService {
     return userFound;
   }
 
-  async signIn(user: UserLoginDTO): Promise<GetUserDTO> {
+  async signInUser(user: UserLoginDTO): Promise<GetUserDTO> {
     const userFound: GetUserDTO = await this.usersRepository
         .findOne({ select: ['email', 'password', 'usertype'],
                   where: { email: user.email } });

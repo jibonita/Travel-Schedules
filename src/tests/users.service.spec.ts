@@ -21,16 +21,7 @@ describe('UserService', () => {
               defaultStrategy: 'jwt',
             })],
             controllers: [],
-            providers: [UsersService, UserRepository,
-              // {
-              //   provide: UserRepository,
-              //   useValue: {
-              //     findOne: () => {
-              //       return null;
-              //     },
-              //   },
-              // }
-            ],
+            providers: [UsersService, UserRepository],
           }).compile();
 
           userSrvc = testingModule.get<UsersService>(UsersService);
@@ -39,23 +30,6 @@ describe('UserService', () => {
 
         it('throw when user already exists', async () => {
             const user = new UserRegisterDTO();
-            // testingModule = await Test.createTestingModule({
-            //   imports: [PassportModule.register({
-            //     defaultStrategy: 'jwt',
-            //   })],
-            //   controllers: [],
-            //   providers: [UsersService,
-            //     {
-            //       provide: UserRepository,
-            //       useValue: {
-            //         findOne: () => {
-            //           return new User();
-            //         },
-            //       },
-            //     }],
-            // }).compile();
-            // userSrvc = testingModule.get<UsersService>(UsersService);
-
             jest.spyOn(userRepo, 'findOne').mockImplementation(() => {
               return new User();
             });
@@ -87,7 +61,7 @@ describe('UserService', () => {
           expect(userRepo.save).toHaveBeenCalledTimes(1);
         });
 
-        it('retrun the created user', async () => {
+        it('return the created user', async () => {
           const userDto = new UserRegisterDTO();
           userDto.email = 'test';
           userDto.password =  'pwd';
@@ -101,7 +75,7 @@ describe('UserService', () => {
         });
     });
 
-    describe('signIn method should', () => {
+    describe('signInUser method should', () => {
         let userSrvc: UsersService;
         let testingModule: TestingModule;
         let userRepo: UserRepository;
@@ -135,7 +109,7 @@ describe('UserService', () => {
           jest.spyOn(bcrypt, 'compare').mockImplementation(() => {
             return true;
           });
-          await userSrvc.signIn(userDto);
+          await userSrvc.signInUser(userDto);
 
           expect(bcrypt.compare).toHaveBeenCalled();
         });
@@ -144,7 +118,7 @@ describe('UserService', () => {
           jest.spyOn(bcrypt, 'compare').mockImplementation(() => {
             return true;
           });
-          const user = await userSrvc.signIn(userDto);
+          const user = await userSrvc.signInUser(userDto);
 
           expect(user.email).toBe('test');
         });
@@ -153,15 +127,14 @@ describe('UserService', () => {
           jest.spyOn(userRepo, 'findOne').mockImplementation(() => {
             return null;
           });
-          const user = await userSrvc.signIn(userDto);
+          const user = await userSrvc.signInUser(userDto);
 
           expect(user).toBeNull();
         });
     });
 
-    describe.only('deleteUser method should', () => {
+    describe('deleteUser method should', () => {
       let userSrvc: UsersService;
-      //let testingModule: TestingModule;
       let userRepo: UserRepository;
       const userDto = new GetUserEmailDTO();
 
@@ -171,15 +144,7 @@ describe('UserService', () => {
               defaultStrategy: 'jwt',
             })],
             controllers: [],
-            providers: [UsersService,
-              {
-                provide: UserRepository,
-                useValue: {
-                  findOne: () => {
-                    return new User();
-                  },
-                },
-            }],
+            providers: [UsersService, UserRepository],
           }).compile();
 
           userSrvc = testingModule.get<UsersService>(UsersService);
@@ -187,10 +152,6 @@ describe('UserService', () => {
         });
 
       it('throw error when user does not exist', async () => {
-        jest.spyOn(userRepo, 'findOne').mockImplementation(() => {
-          return null;
-        });
-
         try {
           await userSrvc.deleteUser(userDto);
         } catch (error) {
@@ -198,13 +159,17 @@ describe('UserService', () => {
           expect(error.message.message).toBe('This user doesn\'t exist in DB!');
         }
       });
-// BUGGY
+
       it('call repository delete method if user exists', async () => {
-        userDto.email = 'test';
+        jest.spyOn(userRepo, 'findOne').mockImplementation(() => {
+          return new User();
+        });
         jest.spyOn(userRepo, 'delete').mockImplementation();
+
         await userSrvc.deleteUser(userDto);
 
         expect(userRepo.delete).toHaveBeenCalled();
+
       });
     });
 });
