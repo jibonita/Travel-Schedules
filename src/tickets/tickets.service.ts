@@ -18,9 +18,9 @@ export class TicketsService {
         private readonly routeRepository: Repository<Route>,
         ) { }
 
-    async addTicket(ticketDTO: AddTicketDTO) {
+    async addTicket(ticketDTO: AddTicketDTO, user: User) {
         const ticket = new Ticket();
-        ticket.user = ticketDTO.userID;
+        ticket.user = user;
         ticket.route = ticketDTO.routeID;
         ticket.endStop = ticketDTO.endStop;
         const routeFound: any = await this.routeRepository.findOne({ where: { routeID: ticket.route } });
