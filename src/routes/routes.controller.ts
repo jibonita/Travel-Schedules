@@ -1,11 +1,8 @@
-import { User } from './../data/entities/user';
+
 import { Controller, Get, UseGuards, Query, Param, Post, Body, ValidationPipe, Delete, Request, Req } from '@nestjs/common';
 import { RoutesService } from './routes.service';
-import bodyParser = require('body-parser');
 import { AddRouteDTO } from '../models/route/add-route.dto';
 import { AuthGuard } from '@nestjs/passport';
-import { allow } from 'joi';
-import { UserRoles } from 'nest-access-control';
 import { Roles } from '../common/decorators/roles.decorator';
 
 @Controller('routes')

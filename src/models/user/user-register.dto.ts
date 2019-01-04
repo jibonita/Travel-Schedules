@@ -1,5 +1,4 @@
-import { IsString, Length, Matches, IsEmail, IsNumber, IsOptional } from 'class-validator';
-import { Optional } from '@nestjs/common';
+import { IsString, IsEmail, IsOptional } from 'class-validator';
 import { Usertype } from '../../data/entities/usertype';
 
 export class UserRegisterDTO {

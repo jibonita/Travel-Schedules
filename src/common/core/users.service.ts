@@ -1,12 +1,11 @@
 import { UserLoginDTO } from '../../models/user/user-login.dto';
 import { UserRegisterDTO } from '../../models/user/user-register.dto';
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
-import { Repository, TransactionManager, EntityManager, Transaction } from 'typeorm';
+import { Injectable, BadRequestException } from '@nestjs/common';
+import { Repository } from 'typeorm';
 import { InjectRepository, InjectEntityManager } from '@nestjs/typeorm';
 
 import * as bcrypt from 'bcrypt';
 import { JwtPayload } from './../../interfaces/jwt-payload';
-import { validate } from 'class-validator';
 import { User } from '../../data/entities/user';
 import { GetUserDTO } from '../../models/user/get-user.dto';
 import { GetUserEmailDTO } from '../../models/user/user-email.dto';

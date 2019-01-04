@@ -6,7 +6,6 @@ import { Route } from '../data/entities/route';
 import { AddRouteDTO } from '../models/route/add-route.dto';
 import { Stop } from '../data/entities/stop';
 import { RouteStop } from '../data/entities/routestop';
-import { DBRouteDTO } from '../models/route/db-route.dto';
 import { User } from '../data/entities/user';
 
 @Injectable()
