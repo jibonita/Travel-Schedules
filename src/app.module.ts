@@ -7,7 +7,6 @@ import { CoreModule } from './common/core/core.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigService } from './config/config.service';
 import { RoutesModule } from './routes/routes.module';
-import { StopsService } from './stops/stops.service';
 import { StopsModule } from './stops/stops.module';
 import { TicketsModules } from './tickets/tickets.module';
 

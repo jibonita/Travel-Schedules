@@ -2,7 +2,6 @@ import { Entity, PrimaryGeneratedColumn, Column, OneToMany, OneToOne, ManyToMany
 import { RouteStop } from './routestop';
 import { Route } from './route';
 import { Ticket } from './ticket';
-import { number } from 'joi';
 
 @Entity('stops')
 export class Stop {
@@ -17,7 +16,7 @@ export class Stop {
 
     @OneToMany(type => RouteStop, rstop => rstop.stopID)
     routestop: RouteStop[];
-    
+
     @OneToMany(type => Ticket, ticket => ticket.endStop)
     ticket: Ticket[];
 

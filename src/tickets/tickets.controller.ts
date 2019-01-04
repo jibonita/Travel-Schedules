@@ -3,8 +3,6 @@ import { AddTicketDTO } from './../models/ticket/add-ticket.dto';
 import { Controller, Post, ValidationPipe, Body, UseGuards, Get, Param, ExecutionContext, Request, BadRequestException, Delete } from '@nestjs/common';
 import { TicketsService } from './tickets.service';
 import { Roles } from '../common/decorators/roles.decorator';
-import { log } from 'util';
-import { throwError } from 'rxjs';
 
 @Controller('tickets')
 
