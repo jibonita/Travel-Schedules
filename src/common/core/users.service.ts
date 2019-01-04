@@ -54,11 +54,11 @@ export class UsersService {
     return null;
   }
 
-  async getAll() {
+  async getAll(): Promise<User[]> {
     return this.usersRepository.find({});
   }
 
-  async getClients() {
+  async getClients(): Promise<User[]> {
     return this.usersRepository.find({
       usertype: {
         id: 1,
@@ -66,7 +66,7 @@ export class UsersService {
     });
   }
 
-  async getCompanies() {
+  async getCompanies(): Promise<User[]> {
     return this.usersRepository.find({
       usertype: {
         id: 2,

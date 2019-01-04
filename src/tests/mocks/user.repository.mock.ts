@@ -18,7 +18,7 @@ export class UserRepository  {
         return null;
     }
 
-    delete() {
+    delete(user: User) {
         return null;
     }
 }

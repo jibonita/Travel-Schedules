@@ -1,3 +1,4 @@
+import { JwtPayload } from './../interfaces/jwt-payload';
 import { BadRequestException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { PassportModule } from '@nestjs/passport';
@@ -8,6 +9,7 @@ import { UserRepository } from './mocks/user.repository.mock';
 import * as bcrypt from 'bcrypt';
 import { UserLoginDTO } from '../models/user/user-login.dto';
 import { GetUserEmailDTO } from '../models/user/user-email.dto';
+import { GetUserDTO } from '../models/user/get-user.dto';
 
 describe('UserService', () => {
     describe('registerUser method should', () => {
@@ -170,6 +172,81 @@ describe('UserService', () => {
 
         expect(userRepo.delete).toHaveBeenCalled();
 
+      });
+    });
+
+    describe('validateUser method should', () => {
+      let userSrvc: UsersService;
+      let userRepo: UserRepository;
+      const payload: JwtPayload = {email: 'test-email'};
+
+      beforeEach(async () => {
+          const testingModule = await Test.createTestingModule({
+            imports: [PassportModule.register({
+              defaultStrategy: 'jwt',
+            })],
+            controllers: [],
+            providers: [UsersService, UserRepository],
+          }).compile();
+
+          userSrvc = testingModule.get<UsersService>(UsersService);
+          userRepo = testingModule.get<UserRepository>(UserRepository);
+        });
+
+      it('call findOne method of the userRepository', async () => {
+        jest.spyOn(userRepo, 'findOne').mockImplementation(() => {
+          return null;
+        });
+        userSrvc.validateUser(payload);
+
+        expect(userRepo.findOne).toHaveBeenCalled();
+      });
+
+      it('return the user when user exists', async () => {
+        jest.spyOn(userRepo, 'findOne').mockImplementation(() => {
+          return new GetUserDTO();
+        });
+
+        const user = await userSrvc.validateUser(payload);
+
+        expect(user).toBeInstanceOf(GetUserDTO);
+      });
+
+      it('return null when user does NOT exist', async () => {
+        const user = await userSrvc.validateUser(payload);
+
+        expect(user).toBeNull();
+      });
+    });
+
+    describe('getAll method should', () => {
+      let userSrvc: UsersService;
+
+      beforeEach(async () => {
+          const testingModule = await Test.createTestingModule({
+            imports: [PassportModule.register({
+              defaultStrategy: 'jwt',
+            })],
+            controllers: [],
+            providers: [UsersService,
+            {
+              provide: 'UserRepository',
+              useValue: {
+                find: () => {
+                  return [{email: 'test-email'}];
+                },
+              },
+            }],
+          }).compile();
+
+          userSrvc = testingModule.get<UsersService>(UsersService);
+         });
+
+      it('return users with find() method of the userRepository', async () => {
+         const users = await userSrvc.getAll();
+         const userEmail: string = users[0].email;
+
+         expect(userEmail).toBe('test-email');
       });
     });
 });
