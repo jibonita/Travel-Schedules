@@ -21,10 +21,12 @@ export class StopsService {
         if (stopFound) {
         throw new Error(`Could not add: Stop ${stop.name} already exists!`);
         }
+        const newStop = new Stop();
+        newStop.name = stop.name;
 
-        await this.stopsRepository.create(stop);
+        await this.stopsRepository.create(newStop);
 
-        const result = await this.stopsRepository.save(stop);
+        const result = await this.stopsRepository.save(newStop);
 
         return result;
     }

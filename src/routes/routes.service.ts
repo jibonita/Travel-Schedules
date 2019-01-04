@@ -21,7 +21,7 @@ export class RoutesService {
       private readonly routeStopsRepository: Repository<RouteStop>,
     ) { }
 
-  async addRoute(route: AddRouteDTO ) {
+  async addRoute(route: AddRouteDTO, company: number) {
     const allStopsSet = new Set([route.startPoint, ...route.stops, route.endPoint]);
     const allStopsArray =  [...allStopsSet];
 
@@ -30,7 +30,7 @@ export class RoutesService {
     }
 
     const newRoute: Route = new Route();
-    newRoute.company = route.company;
+    newRoute.company = company;
     newRoute.endPoint = route.endPoint;
     newRoute.isApproved = true;
     newRoute.leaves = route.leaves;

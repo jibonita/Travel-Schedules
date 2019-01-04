@@ -6,9 +6,6 @@ import { Stop } from '../../data/entities/stop';
 export class AddTicketDTO {
 
     @IsNumber()
-    userID: User;
-
-    @IsNumber()
     routeID: Route;
 
     @IsNumber()

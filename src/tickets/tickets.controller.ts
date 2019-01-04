@@ -40,9 +40,10 @@ export class TicketsController {
     async addTicket(@Body(new ValidationPipe({
         transform: true,
         whitelist: true,
-    })) ticket: AddTicketDTO): Promise<string> {
+    })) ticket: AddTicketDTO,
+                    @Request() req): Promise<string> {
             try {
-               await this.ticketsService.addTicket(ticket);
+               await this.ticketsService.addTicket(ticket, req.user);
                return 'Ticket successfully added to DB';
             } catch (error) {
                 return error.message;
