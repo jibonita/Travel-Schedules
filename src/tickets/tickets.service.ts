@@ -53,7 +53,6 @@ export class TicketsService {
       }
       async getAllTicketsForRoute(routeId, companyID) {
         const routeFound = await this.routeRepository.findOne({routeID: routeId, company: companyID});
-        console.log(routeFound);
 
         if (!routeFound) {
             throw new BadRequestException('You dont have access to this route');

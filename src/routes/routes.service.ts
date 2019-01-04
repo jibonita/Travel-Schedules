@@ -29,7 +29,12 @@ export class RoutesService {
       throw new Error(`Could not find some of the stops: It does not exist!`);
     }
 
-    const newRoute: DBRouteDTO = route as DBRouteDTO;
+    const newRoute: Route = new Route();
+    newRoute.company = route.company;
+    newRoute.endPoint = route.endPoint;
+    newRoute.isApproved = true;
+    newRoute.leaves = route.leaves;
+    newRoute.startPoint = route.startPoint;
 
     await this.routesRepository.create(newRoute);
 
@@ -46,14 +51,21 @@ export class RoutesService {
 
   async addRouteStops(routeID: any, allStopsArray: Array<string | number>): Promise<any> {
       let orderIndex = 1;
-      for (const stop of allStopsArray) {
+      // for (const stop of allStopsArray) {
+      //   const routeStop = new RouteStop();
+      //   routeStop.routeID = +routeID;
+      //   routeStop.stopID = +stop;
+      //   routeStop.StopOrder = orderIndex++;
+
+      //   await this.routeStopsRepository.save(routeStop);
+      // }
+      await Promise.all(allStopsArray.map(stop => {
         const routeStop = new RouteStop();
         routeStop.routeID = +routeID;
         routeStop.stopID = +stop;
         routeStop.StopOrder = orderIndex++;
-
-        await this.routeStopsRepository.save(routeStop);
-      }
+        return this.routeStopsRepository.save(routeStop);
+    }));
   }
 
   async getRouteById(id: string, isLogged?: boolean): Promise<any> {
