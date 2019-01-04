@@ -66,10 +66,11 @@ export class RoutesController {
   async addRoute(@Body(new ValidationPipe({
     transform: true,
     whitelist: true,
-  }))  route: AddRouteDTO)
-  : Promise<string> {
+  }))  route: AddRouteDTO,
+                 @Request() req): Promise<string> {
+      console.log(req.user);
       try {
-        await this.routesService.addRoute(route);
+        await this.routesService.addRoute(route, req.user.userID);
         return 'Route added';
       } catch (error) {
         await new Promise((resolve, reject) => {

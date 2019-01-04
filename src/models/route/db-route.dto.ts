@@ -1,4 +1,4 @@
-import { IsNumber, IsBoolean, IsString, Matches, IsOptional } from "class-validator";
+import { IsNumber, IsBoolean, IsString, Matches, IsOptional } from 'class-validator';
 
 export class DBRouteDTO {
     @IsNumber()
@@ -14,6 +14,4 @@ export class DBRouteDTO {
     @IsBoolean()
     isApproved: boolean = true;
 
-    @IsNumber()
-    company: number;
 }
