@@ -68,7 +68,6 @@ export class RoutesController {
     whitelist: true,
   }))  route: AddRouteDTO,
                  @Request() req): Promise<string> {
-      console.log(req.user);
       try {
         await this.routesService.addRoute(route, req.user.userID);
         return 'Route added';
