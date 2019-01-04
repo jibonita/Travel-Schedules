@@ -15,7 +15,7 @@ export class RoutesController {
   @Get()
   @UseGuards(AuthGuard())
   @Roles('admin', 'company')
-  listAllUsers(@Request() req) {
+  listAllRoutes(@Request() req) {
     try {
       let companyId: number = 0;
       if (req.user.usertype.name === 'company') {
@@ -28,7 +28,7 @@ export class RoutesController {
   }
 
   @Get('search')
-  searchRoutes(@Query() query ) {  // ,
+  searchRoutes(@Query() query ) {
     try {
         if (query.from && query.to) {
           return this.routesService.getAllRoutesFromTo(query.from, query.to);
@@ -69,10 +69,6 @@ export class RoutesController {
         await this.routesService.addRoute(route, req.user.userID);
         return 'Route added';
       } catch (error) {
-        await new Promise((resolve, reject) => {
-              resolve();
-        });
-
         return (error.message);
       }
   }
