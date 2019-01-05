@@ -49,16 +49,20 @@ export class AuthController {
       transform: true,
       whitelist: true,
     }))
-    user: UserRegisterDTO ): Promise<string> {
+    user: UserRegisterDTO ): Promise<{message: string}> {
 
     try {
       const usertype = await this.usersRepository
           .findOne({ where: {id: user.companyName ? 2 : 1 } });
       user.usertype = usertype;
       await this.usersService.registerUser(user);
-      return 'user successfully added to DB';
+      return {
+        message: 'User successfully added to DB',
+      };
     } catch (error) {
-        return (error.message);
+        return {
+          message: error.message,
+        };
     }
   }
 }

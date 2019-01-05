@@ -1,4 +1,4 @@
-import { Column, OneToOne, ManyToMany, OneToMany } from 'typeorm';
+import { Column, OneToOne, ManyToMany, OneToMany, ManyToOne, JoinColumn } from 'typeorm';
 import { Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { Stop } from './stop';
 import { RouteStop } from './routestop';
@@ -26,9 +26,9 @@ export class Route {
     @Column()
     isApproved: boolean;
 
-    @Column()
-    @OneToOne(type => User)
-    company: number;
+    @JoinColumn({name: 'company'})
+    @ManyToOne(type => User, user => user.userID, {eager: true})
+    company: User;
 
     @OneToMany(type => Ticket, ticket => ticket.route)
     ticket: Ticket[];

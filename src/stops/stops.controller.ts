@@ -1,11 +1,12 @@
 import { StopsService } from './stops.service';
-import { Controller, Get, Body, Post, ValidationPipe, UseGuards } from '@nestjs/common';
+import { Controller, Get, Body, Post, ValidationPipe, UseGuards, Request } from '@nestjs/common';
 import { AddStopDTO } from '../models/stop/add-stop.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { Roles } from '../common/decorators/roles.decorator';
+import { RolesGuard } from 'src/common/guards/roles/roles.guard';
 
 @Controller('stops')
-@UseGuards(AuthGuard())
+@UseGuards(AuthGuard(), RolesGuard)
 
 export class StopsController {
     constructor(
@@ -18,23 +19,19 @@ export class StopsController {
         return this.stopsService.getAll();
     }
 
-    @Roles('admin', 'company')
     @Post()
+    @Roles('admin', 'company')
     async add(
         @Body(new ValidationPipe({
           transform: true,
           whitelist: true,
         })) stop: AddStopDTO )
-        : Promise<string> {
+        : Promise<any> {
             try {
                 await this.stopsService.addStop(stop);
-                return `Added stop ${stop.name}`;
+                return { message: `Added stop ${stop.name}`};
               } catch (error) {
-                await new Promise((resolve, reject) => {
-                       resolve();
-                });
-
-                return (error.message);
+                    return { message: error.message};
               }
     }
 }

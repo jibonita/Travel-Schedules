@@ -20,11 +20,11 @@ export class RoutesService {
       private readonly routeStopsRepository: Repository<RouteStop>,
     ) { }
 
-  async addRoute(route: AddRouteDTO, company: number) {
+  async addRoute(route: AddRouteDTO, company: User) {
     const allStopsSet = new Set([route.startPoint, ...route.stops, route.endPoint]);
     const allStopsArray =  [...allStopsSet];
 
-    if (!this.verifyStopsExist(allStopsArray)) {
+    if (!(await this.verifyStopsExist(allStopsArray))) {
       throw new Error(`Could not find some of the stops: It does not exist!`);
     }
 
@@ -39,7 +39,7 @@ export class RoutesService {
 
     await this.routesRepository.save(newRoute);
 
-    await this.addRouteStops((newRoute as Route).routeID, allStopsArray);
+    await this.addRouteStops(newRoute.routeID, allStopsArray);
 
   }
 
@@ -50,14 +50,6 @@ export class RoutesService {
 
   async addRouteStops(routeID: any, allStopsArray: Array<string | number>): Promise<any> {
       let orderIndex = 1;
-      // for (const stop of allStopsArray) {
-      //   const routeStop = new RouteStop();
-      //   routeStop.routeID = +routeID;
-      //   routeStop.stopID = +stop;
-      //   routeStop.StopOrder = orderIndex++;
-
-      //   await this.routeStopsRepository.save(routeStop);
-      // }
       await Promise.all(allStopsArray.map(stop => {
         const routeStop = new RouteStop();
         routeStop.routeID = +routeID;
@@ -125,22 +117,29 @@ export class RoutesService {
 
   }
 
-  async getAllRoutes(companyID) {
-    if (companyID) {
-      return this.routesRepository.find({
-        where: { company: companyID },
+  async getAllRoutes(companyUser) {
+    if (companyUser) {
+       return this.routesRepository.find({
+        where: { company: companyUser },
       });
     } else {
         return this.routesRepository.find({});
     }
    }
 
-  async getAllRoutesFromTo(from, to) {
+  async getAllRoutesFromTo(query) {
+    const fromStop = query.from;
+    const toStop = query.to;
+
+    if (!fromStop || !toStop) {
+      throw new Error('Incomplete search parameters!');
+      }
+
     const routeQB = await createQueryBuilder(Route, 'route')
         .innerJoinAndSelect(RouteStop, 'rsStart', 'rsStart.routeID = route.routeID')
         .innerJoinAndSelect(RouteStop, 'rsEnd', 'rsEnd.routeID = route.routeID')
         .where('rsStart.StopID = :startStop AND rsEnd.StopID = :endStop')
-        .setParameters({ startStop: from, endStop: to })
+        .setParameters({ startStop: fromStop, endStop: toStop })
         .select([
           'route.routeID',
           'leaves',
@@ -168,12 +167,13 @@ export class RoutesService {
     return routeQB;
    }
 
-  async deleteRoute(id): Promise<any> {
+  async deleteRoute(id, user): Promise<any> {
     const routeFound = await this.routesRepository
-        .findOne({ select: ['routeID'],
-        where: { routeID: id } });
+        .findOne({
+        where: { routeID: id, company: user} });
+
     if (!routeFound) {
-      throw new BadRequestException('This route doesnt exist in DB!');
+      throw new BadRequestException('This route doesn\'t exist in DB!');
     }
 
     await this.routesRepository.delete(routeFound);

@@ -1,4 +1,4 @@
-
+import { RolesGuard } from 'src/common/guards/roles/roles.guard';
 import { Controller, Get, UseGuards, Query, Param, Post, Body, ValidationPipe, Delete, Request, Req } from '@nestjs/common';
 import { RoutesService } from './routes.service';
 import { AddRouteDTO } from '../models/route/add-route.dto';
@@ -13,26 +13,24 @@ export class RoutesController {
   ) { }
 
   @Get()
-  @UseGuards(AuthGuard())
+  @UseGuards(AuthGuard(), RolesGuard)
   @Roles('admin', 'company')
-  listAllRoutes(@Request() req) {
+  async listAllRoutes(@Request() req) {
     try {
-      let companyId: number = 0;
-      if (req.user.usertype.name === 'company') {
-        companyId = req.user.userID;
+      let company: number = 0;
+      if (req.user.usertype.name.toLowerCase() === 'company') {
+        company = req.user;
       }
-      return this.routesService.getAllRoutes(companyId);
+      return await this.routesService.getAllRoutes(company);
     } catch (error) {
         return (error.message);
     }
   }
 
   @Get('search')
-  searchRoutes(@Query() query ) {
+  async searchRoutes(@Query() query ) {
     try {
-        if (query.from && query.to) {
-          return this.routesService.getAllRoutesFromTo(query.from, query.to);
-        }
+        return await this.routesService.getAllRoutesFromTo(query);
       } catch (error) {
         return (error.message);
       }
@@ -58,28 +56,30 @@ export class RoutesController {
   }
 
   @Post()
-  @UseGuards(AuthGuard())
+  @UseGuards(AuthGuard(), RolesGuard)
   @Roles('company')
   async addRoute(@Body(new ValidationPipe({
     transform: true,
     whitelist: true,
   }))  route: AddRouteDTO,
-                 @Request() req): Promise<string> {
+                 @Request() req): Promise<{}> {
       try {
-        await this.routesService.addRoute(route, req.user.userID);
-        return 'Route added';
+        await this.routesService.addRoute(route, req.user);
+        return {message: 'Route added'};
       } catch (error) {
-        return (error.message);
+        return { message: error.message};
       }
   }
 
   @Delete(':id')
-  @UseGuards(AuthGuard())
+  @UseGuards(AuthGuard(), RolesGuard)
   @Roles('company')
-  delete(@Param() params) {
+  async delete(@Param() params, @Request() req): Promise<{}>  {
     try {
-      this.routesService.deleteRoute(params.id);
-      return 'route deleted';
+      await this.routesService.deleteRoute(params.id, req.user);
+      return  {
+        message: 'route deleted',
+      };
     } catch (error) {
       return (error.message);
     }

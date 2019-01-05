@@ -8,6 +8,7 @@ import {
 } from 'typeorm';
 import { Usertype } from './usertype';
 import { Ticket } from './ticket';
+import { Route } from './route';
 
 @Entity('users')
 export class User {
@@ -35,4 +36,6 @@ export class User {
     @OneToMany(type => Ticket, ticket => ticket.user)
     ticket: Ticket[];
 
+    @OneToMany(type => Route, route => route.company)
+    company: Route[];
 }
