@@ -16,10 +16,8 @@ describe('AuthController', () => {
   describe('sign method', () => {
     const authService: AuthService = new AuthService(null, null);
     let authCtrl: AuthController;
-    let jwtServiceMock: JwtServiceMock;
 
     beforeAll(async () => {
-      jwtServiceMock = new JwtServiceMock({});
       const module = await Test.createTestingModule({
         imports: [PassportModule.register({
           defaultStrategy: 'jwt',
@@ -153,7 +151,9 @@ describe('AuthController', () => {
         return 'registered-mock';
       });
 
-      expect(await authCtrl.register(user)).toBe('user successfully added to DB');
+      const result = await authCtrl.register(user);
+
+      expect(result.message).toBe('User successfully added to DB');
     });
 
     it('should return thrown error message on UserService registerUser fail', async () => {
@@ -162,7 +162,9 @@ describe('AuthController', () => {
         throw new Error('reg-failed');
       });
 
-      expect(await authCtrl.register(user)).toBe('reg-failed');
+      const result = await authCtrl.register(user);
+
+      expect(result.message).toBe('reg-failed');
     });
 
   });

@@ -193,6 +193,11 @@ describe('UserService', () => {
           userRepo = testingModule.get<UserRepository>(UserRepository);
         });
 
+      // Not working so we replace beforeAll with beforeEach here
+      // beforeEach(() => {
+      //     jest.clearAllMocks();
+      //   });
+
       it('call findOne method of the userRepository', async () => {
         jest.spyOn(userRepo, 'findOne').mockImplementation(() => {
           return null;
