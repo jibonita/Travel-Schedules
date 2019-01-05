@@ -1,32 +1,72 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" width="320" alt="Nest Logo" /></a>
-</p>
+# Web applications and Databases Teamwork  - JavaScript Alpha Aug'18
 
-[travis-image]: https://api.travis-ci.org/nestjs/nest.svg?branch=master
-[travis-url]: https://travis-ci.org/nestjs/nest
-[linux-image]: https://img.shields.io/travis/nestjs/nest/master.svg?label=linux
-[linux-url]: https://travis-ci.org/nestjs/nest
+## Team 3
+
+- Osman
+- Stefka
+
+## Project Description
+
+Project theme: **Bus Travel Schedule System** - API that gives info for bus routes from point A to point B, opportunity to reserve a ticket for the entire bus route for a part of it
   
-  <p align="center">A progressive <a href="http://nodejs.org" target="blank">Node.js</a> framework for building efficient and scalable server-side applications, heavily inspired by <a href="https://angular.io" target="blank">Angular</a>.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore"><img src="https://img.shields.io/npm/dm/@nestjs/core.svg" alt="NPM Downloads" /></a>
-<a href="https://travis-ci.org/nestjs/nest"><img src="https://api.travis-ci.org/nestjs/nest.svg?branch=master" alt="Travis" /></a>
-<a href="https://travis-ci.org/nestjs/nest"><img src="https://img.shields.io/travis/nestjs/nest/master.svg?label=linux" alt="Linux" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#5" alt="Coverage" /></a>
-<a href="https://gitter.im/nestjs/nestjs?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=body_badge"><img src="https://badges.gitter.im/nestjs/nestjs.svg" alt="Gitter" /></a>
-<a href="https://opencollective.com/nest#backer"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec"><img src="https://img.shields.io/badge/Donate-PayPal-dc3d53.svg"/></a>
-  <a href="https://twitter.com/nestframework"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+The application has:
 
-## Description
+- **public part** - search for a route by given start and end point
+- **private part** - registered companies can add routes, preview tickets reserved for their routes; registered users can reserve a ticket
+- **administrative part** - admin user can view all user groups, delete users
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+### Public Part
+
+The **public part** of the project is **visible without authentication**.
+
+This public part includes:
+- the user login and user registration forms
+- search for a route by given start and end point
+
+### Private Part (Users only)
+
+**Registered users** has private part in the web application accessible after **successful login**. There are registered companies and clients. 
+
+*Companies can*:
+- add routes, add stops, preview tickets reserved for their routes; 
+
+*Clients can*:
+- reserve a ticket
+
+### Administration Part
+
+**System administrators** can
+
+- view all user groups, delete users
+- system administrators does not register. They are added as modified manually in the db
+
+## Preliminary Requirements
+
+Before you start writing code, please take your time to write a simple project specification. Together with your team member, read the requirements below and answer the following questions in a (README in your repo) in a style of your choosing.
+
+- Who are your team members?
+- What is your project going to be about?
+- What features will it consist of? Explain their purpose. (Try to be as granular as possible.)
+- Create a kanban board with the following data, fill it and keep it updated:
+  - Name of Feature
+  - Feature Owner (who will write it?)
+  - Estimated time it would take (in hours, **don't overthink it**)
+  - Actual time it took (in hours)
+  - Estimated time it would take to unit test (in hours)
+  - Actual time it took to unit test (in hours)
+- For the board you could use Trello or GitLab's project system.
+  - If your selected tool does not support time estimation (for example Trello), just write it in the card's description or use an addon.
+
+Try to adhere to this project specification and make your project as close to it as possible. As you implement each feature, write down the time it really took you and compare them with the estimate. Do not be surprised if the difference between them is great, that's completely normal when you do something like this for the first time. Also, don't go crazy on features, implement a few but implement them amazingly! 
+
+
+
+
+## Should Requirements
+
+* Should have **Administrative** part
+  * Your registered users should have at least one of the two roles: **user** and **administrator**
+
 
 ## Installation
 
@@ -37,6 +77,9 @@ $ npm install
 ## Running the app
 
 ```bash
+# initial DB tables create and fill usertypes 
+$ npm run start-db
+
 # development
 $ npm run start
 
@@ -46,10 +89,8 @@ $ npm run start:dev
 # incremental rebuild (webpack)
 $ npm run webpack
 $ npm run start:hmr
-
-# production mode
-$ npm run start:prod
 ```
+
 
 ## Test
 
@@ -64,16 +105,5 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-  Nest is [MIT licensed](LICENSE).
+## Available routes
+ - 
