@@ -59,9 +59,7 @@ $ npm run start
 # watch mode
 $ npm run start:dev
 
-# incremental rebuild (webpack)
-$ npm run webpack
-$ npm run start:hmr
+
 ```
 
 
@@ -70,9 +68,6 @@ $ npm run start:hmr
 ```bash
 # unit tests
 $ npm run test
-
-# e2e tests
-$ npm run test:e2e
 
 # test coverage
 $ npm run test:cov
