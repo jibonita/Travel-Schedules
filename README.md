@@ -2,8 +2,8 @@
 
 ## Team 3
 
-- Osman
-- Stefka
+- Osman Yumer [telerikacademy.com/Users/GeorgeLevov](https://my.telerikacademy.com/Users/oyumer)
+- Stefka Marinova [telerikacademy.com/Users/GeorgeLevov](https://my.telerikacademy.com/Users/jibonita)
 
 ## Project Description
 
@@ -39,33 +39,6 @@ This public part includes:
 
 - view all user groups, delete users
 - system administrators does not register. They are added as modified manually in the db
-
-## Preliminary Requirements
-
-Before you start writing code, please take your time to write a simple project specification. Together with your team member, read the requirements below and answer the following questions in a (README in your repo) in a style of your choosing.
-
-- Who are your team members?
-- What is your project going to be about?
-- What features will it consist of? Explain their purpose. (Try to be as granular as possible.)
-- Create a kanban board with the following data, fill it and keep it updated:
-  - Name of Feature
-  - Feature Owner (who will write it?)
-  - Estimated time it would take (in hours, **don't overthink it**)
-  - Actual time it took (in hours)
-  - Estimated time it would take to unit test (in hours)
-  - Actual time it took to unit test (in hours)
-- For the board you could use Trello or GitLab's project system.
-  - If your selected tool does not support time estimation (for example Trello), just write it in the card's description or use an addon.
-
-Try to adhere to this project specification and make your project as close to it as possible. As you implement each feature, write down the time it really took you and compare them with the estimate. Do not be surprised if the difference between them is great, that's completely normal when you do something like this for the first time. Also, don't go crazy on features, implement a few but implement them amazingly! 
-
-
-
-
-## Should Requirements
-
-* Should have **Administrative** part
-  * Your registered users should have at least one of the two roles: **user** and **administrator**
 
 
 ## Installation
@@ -106,4 +79,25 @@ $ npm run test:cov
 ```
 
 ## Available routes
- - 
+ | Routes                            |    Admin       |    Company     |    Client    |     Public    |  
+| :---                              |     :---:      |         :---:   |         ---: |         ---: |
+| auth/register   (POST)            |   ✔️           |    ✔️          |     ✔️       |     ✔️       | 
+| auth/login   (POST)               |   ✔️           |    ✔️          |     ✔️       |    ✔️       |
+| /users                            |   ✔️           |    ✘          |     ✘        |    ✘        |
+| /users/clients                    |   ✔️           |    ✘          |     ✘        |    ✘        |
+| /users/companies                  |   ✔️           |    ✘           |     ✘        |    ✘        |
+| /users (DELETE)                   |   ✔️           |    ✘          |     ✘        |    ✘        |
+| /routes                           |   ✔️           |    ✔️           |     ✘        |    ✘        |
+| /routes  (POST)                   |   ✘           |    ✔️           |     ✘        |    ✘        |
+| /routes/search?query-params       |   ✔️           |    ✔️          |     ✔️        |    ✔️        |
+| /routes/:id                        |   ✔️           |    ✔️          |     ✔️        |    ✔️        |
+| /routes/:id/details               |   ✔️           |    ✔️           |     ✔️        |    ✘        |
+| /routes/id   (DELETE)             |   ✘           |    ✔️           |     ✘        |    ✘        |
+| /stops                           |   ✔️           |    ✘           |     ✘        |    ✘        |
+| /stops  (POST)                   |   ✔️           |    ✔️           |     ✘        |    ✘        |
+| /tickets/userid                    |   ✘           |    ✘           |     ✔️        |    ✘        |
+| /tickets/route/:id                   |   ✘           |    ✔️           |     ✘        |    ✘        |
+| /tickets   (POST)                 |   ✘️           |    ✘           |     ✔️        |    ✘        |
+| /tickets/:id (DELETE)                   |   ✘           |    ✔️           |     ✔️        |    ✘        |
+
+ Trello link: https://trello.com/b/Hg776xwe/travel-schedule
