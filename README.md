@@ -2,7 +2,7 @@
 
 ## Team 3
 
-- Osman Yumer [telerikacademy.com/Users/oyume](https://my.telerikacademy.com/Users/oyumer)
+- Osman Yumer [telerikacademy.com/Users/oyumer](https://my.telerikacademy.com/Users/oyumer)
 - Stefka Marinova [telerikacademy.com/Users/jibonita](https://my.telerikacademy.com/Users/jibonita)
 
 ## Project Description
