@@ -1,5 +1,6 @@
 import { TicketsService } from '../tickets/tickets.service';
 import { TicketsController } from '../tickets/tickets.controller';
+import { AddTicketDTO } from './../models/ticket/add-ticket.dto';
 
 jest.mock('../tickets/tickets.service.ts');
 
@@ -11,16 +12,41 @@ describe('TicketsController', () => {
         jest.clearAllMocks();
     });
 
-    // describe('allPerUser method should', () => {
-    //     it('call ticketsService getAllUserTickets() method', async () => {
-    //         jest.spyOn(ticketsService, 'getAllUserTickets').mockImplementation();
+    describe('allPerUser method should', () => {
+        it('call ticketsService getAllUserTickets() method', async () => {
+            const req = {
+                user: {
+                        userID: 1,
+                    }};
 
-    //         await ticketsCtrl.allPerUser({}, {});
+            const param = {
+                user: 1,
+            };
 
-    //         expect(ticketsService.getAllUserTickets).toHaveBeenCalled();
-    //     });
+            jest.spyOn(ticketsService, 'getAllUserTickets').mockImplementation();
 
-    // });
+            await ticketsCtrl.allPerUser(param, req);
+
+            expect(ticketsService.getAllUserTickets).toHaveBeenCalled();
+        });
+
+        it('throw error message when user trying to access somebody elses data', async () => {
+            const req = {
+                user: {
+                        userID: 2,
+                    }};
+
+            const param = {
+                user: 1,
+            };
+
+            const result = await ticketsCtrl.allPerUser(param, req);
+
+            expect(result.message).toBe('User trying to access somebody else\'s data');
+
+        });
+    });
+
     describe('getAllTicketsForRoute should', () => {
         it('call ticketsService getAllTicketsForRoute() method', async () => {
             const req = {
@@ -32,6 +58,36 @@ describe('TicketsController', () => {
             await ticketsCtrl.getAllTicketsForRoute(req, req);
 
             expect(ticketsService.getAllTicketsForRoute).toHaveBeenCalled();
+        });
+    });
+
+    describe('addTicket method should', () => {
+        it('call ticketsService addTicket() method', async () => {
+            jest.spyOn(ticketsService, 'addTicket').mockImplementation();
+
+            await ticketsCtrl.addTicket(new AddTicketDTO(), {});
+
+            expect(ticketsService.addTicket).toHaveBeenCalled();
+        });
+
+        it('return success message', async () => {
+
+            jest.spyOn(ticketsService, 'addTicket').mockImplementation();
+
+            const result = await ticketsCtrl.addTicket(new AddTicketDTO(), {});
+
+            expect(result).toBe('Ticket successfully added to DB');
+        });
+
+        it('return error message when addTicket method fails', async () => {
+
+            jest.spyOn(ticketsService, 'addTicket').mockImplementation(() =>  {
+                throw new Error('add-ticket-error');
+            });
+
+            const result = await ticketsCtrl.addTicket(new AddTicketDTO(), {});
+
+            expect(result).toBe('add-ticket-error');
         });
     });
 
