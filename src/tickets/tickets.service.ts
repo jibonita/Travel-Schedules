@@ -19,15 +19,19 @@ export class TicketsService {
         ) { }
 
     async addTicket(ticketDTO: AddTicketDTO, user: User) {
+        const routeFound: any = await this.routeRepository.findOne({ where: { routeID: ticketDTO.routeID } });
+        if (!routeFound) {
+            throw new BadRequestException('invalid route');
+        }
+
+        if (+routeFound.startPoint === +ticketDTO.endStop) {
+            throw new BadRequestException('startpoint and endpoint cant be the same ');
+        }
         const ticket = new Ticket();
         ticket.user = user;
         ticket.route = ticketDTO.routeID;
         ticket.endStop = ticketDTO.endStop;
-        const routeFound: any = await this.routeRepository.findOne({ where: { routeID: ticket.route } });
 
-        if (+routeFound.startPoint === +ticket.endStop) {
-            throw new BadRequestException('startpoint and endpoint cant be the same ');
-        }
 
         await this.ticketsRepository.create(ticket);
         const result = await this.ticketsRepository.save([ticket]);

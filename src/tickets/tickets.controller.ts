@@ -5,6 +5,7 @@ import { TicketsService } from './tickets.service';
 import { Roles } from '../common/decorators/roles.decorator';
 
 @Controller('tickets')
+@UseGuards(AuthGuard())
 
 export class TicketsController {
     constructor(
@@ -12,7 +13,6 @@ export class TicketsController {
     ) { }
 
     @Get(':user')
-    @UseGuards(AuthGuard())
     @Roles('client')
     async allPerUser(@Param() params, @Request() req) {
         try {
@@ -26,14 +26,12 @@ export class TicketsController {
     }
 
     @Get('route/:id')
-    @UseGuards(AuthGuard())
     @Roles('company')
     getAllTicketsForRoute(@Param() params, @Request() req) {
         return this.ticketsService.getAllTicketsForRoute(params.id, req.user.userID);
     }
 
     @Post()
-    @UseGuards(AuthGuard())
     @Roles('client')
     async addTicket(@Body(new ValidationPipe({
         transform: true,
@@ -49,7 +47,6 @@ export class TicketsController {
     }
 
     @Delete(':id')
-    @UseGuards(AuthGuard())
     @Roles('client', 'company')
     async deleteTicket(@Param() params) {
         try {

@@ -62,7 +62,7 @@ describe('RoutesService', () => {
             try {
                 await routesService.addRoute(dto, new User());
             } catch (error) {}
-            
+
             expect(routesRepository.create).toHaveReturnedWith('Route');
         });
 
