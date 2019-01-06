@@ -14,7 +14,7 @@ export class TicketsController {
     @Get(':user')
     @UseGuards(AuthGuard())
     @Roles('client')
-    allPerUser(@Param() params, @Request() req) {
+    async allPerUser(@Param() params, @Request() req) {
         try {
            if ( +req.user.userID === +params.user) {
                 return this.ticketsService.getAllUserTickets(params.user);
@@ -51,12 +51,15 @@ export class TicketsController {
     @Delete(':id')
     @UseGuards(AuthGuard())
     @Roles('client', 'company')
-    delete(@Param() params) {
+    async deleteTicket(@Param() params) {
         try {
-          this.ticketsService.deleteTicket(params.id);
-          return 'ticket deleted';
+          await this.ticketsService.deleteTicket(params.id);
+          return {
+            message: 'Ticket deleted',
+          };
         } catch (error) {
-          return (error.message);
+          return {
+          message: error.message};
         }
       }
 }
